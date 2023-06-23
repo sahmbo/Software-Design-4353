@@ -19,7 +19,7 @@ class ClientRegistration extends StatelessWidget {
                   labelText: 'New Username',
                 ),
               ),
-              SizedBox(height: 20),
+              SizedBox(height: 20), // Add space below the username
               TextField(
                 obscureText: true,
                 decoration: InputDecoration(
@@ -27,10 +27,10 @@ class ClientRegistration extends StatelessWidget {
                   labelText: 'New Password',
                 ),
               ),
-              SizedBox(height: 20),
+              SizedBox(height: 20), // Add space below the password
               ElevatedButton(
                 onPressed: () {
-                  // Add  registration functionality here
+                  // Add registration functionality here
                 },
                 child: Text('Register'),
               ),
