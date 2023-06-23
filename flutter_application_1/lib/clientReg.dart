@@ -30,7 +30,7 @@ class ClientRegistration extends StatelessWidget {
               SizedBox(height: 20),
               ElevatedButton(
                 onPressed: () {
-                  // Add your registration functionality here
+                  // Add  registration functionality here
                 },
                 child: Text('Register'),
               ),
