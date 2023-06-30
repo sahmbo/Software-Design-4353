@@ -6,6 +6,8 @@ import 'clientReg.dart';
 void main() {
   runApp(MaterialApp(
     home: FuelQuoteForm(),
+    theme: new ThemeData(scaffoldBackgroundColor: const Color.fromRGBO(255, 201, 173, 0.5)),
+    //home: new MyHomePage(title: 'Flutter Demo Home Page'),
   ));
 }
 
@@ -71,6 +73,7 @@ class _FuelQuoteFormState extends State<FuelQuoteForm> {
                       style: TextStyle(
                         fontSize: 24,
                         fontWeight: FontWeight.bold,
+                        color: Colors.white.withOpacity(1),
                       ),
                     ),
                     ElevatedButton(
@@ -87,6 +90,7 @@ class _FuelQuoteFormState extends State<FuelQuoteForm> {
                         onPrimary: Color.fromRGBO(15, 76, 92, 1.0),
                       ),
                       child: Text('Sign Out'),
+                      
                     ),
                   ],
                 ),
@@ -174,6 +178,7 @@ class _FuelQuoteFormState extends State<FuelQuoteForm> {
     );
   }
 }
+
 
 class LoginApp extends StatefulWidget {
   @override
