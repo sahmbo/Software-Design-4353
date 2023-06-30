@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart'; //super important
 import 'clientReg.dart'; //allows for buttons to actually work
 import 'dart:async';
+import 'fuelQuote.dart';
 
 void main() {
   runApp(MyApp());
