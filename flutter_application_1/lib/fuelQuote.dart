@@ -1,13 +1,11 @@
 import 'package:flutter/material.dart';
 import 'loginPage.dart';
-import 'dart:async';
-import 'clientReg.dart';
 
 void main() {
   runApp(MaterialApp(
     home: FuelQuoteForm(),
-    theme: new ThemeData(scaffoldBackgroundColor: const Color.fromRGBO(255, 201, 173, 0.5)),
-    //home: new MyHomePage(title: 'Flutter Demo Home Page'),
+    theme: ThemeData(
+        scaffoldBackgroundColor: const Color.fromRGBO(255, 201, 173, 0.5)),
   ));
 }
 
@@ -23,7 +21,18 @@ class _FuelQuoteFormState extends State<FuelQuoteForm> {
   TextEditingController _deliveryDateController = TextEditingController();
   double _suggestedPrice = 0.0;
   double _totalAmountDue = 0.0;
-  String _deliveryAddress = '123 Main Street'; // Replace with the actual client profile data
+  String _deliveryAddress =
+      '123 Main Street'; // Replace with the actual client profile data
+
+  bool _isSignOutHovered = false;
+  bool _isCalculateHovered = false;
+
+  void signOut() {
+    Navigator.pushReplacement(
+      context,
+      MaterialPageRoute(builder: (context) => LoginApp()),
+    );
+  }
 
   @override
   void dispose() {
@@ -76,21 +85,35 @@ class _FuelQuoteFormState extends State<FuelQuoteForm> {
                         color: Colors.white.withOpacity(1),
                       ),
                     ),
-                    ElevatedButton(
-                      onPressed: () {
-                        // Sign out the user here, if necessary.
-                        // Then, navigate to the LoginApp page.
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(builder: (context) => LoginApp()),
-                        );
+                    MouseRegion(
+                      onEnter: (_) {
+                        setState(() {
+                          _isSignOutHovered = true;
+                        });
                       },
-                      style: ElevatedButton.styleFrom(
-                        primary: Color.fromRGBO(255, 163, 165, 1.0),
-                        onPrimary: Color.fromRGBO(15, 76, 92, 1.0),
+                      onExit: (_) {
+                        setState(() {
+                          _isSignOutHovered = false;
+                        });
+                      },
+                      child: ElevatedButton(
+                        onPressed: signOut,
+                        style: ElevatedButton.styleFrom(
+                          primary: _isSignOutHovered
+                              ? Color.fromRGBO(255, 163, 165, 1.0)
+                              : Color.fromRGBO(255, 163, 165, 1.0),
+                          onPrimary: _isSignOutHovered
+                              ? Colors.white
+                              : Color.fromRGBO(15, 76, 92, 1.0),
+                        ),
+                        child: Text(
+                          'Sign Out',
+                          style: TextStyle(
+                            color:
+                                _isSignOutHovered ? Colors.white : Colors.black,
+                          ),
+                        ),
                       ),
-                      child: Text('Sign Out'),
-                      
                     ),
                   ],
                 ),
@@ -113,19 +136,6 @@ class _FuelQuoteFormState extends State<FuelQuoteForm> {
                 keyboardType: TextInputType.datetime,
                 onTap: () async {
                   // Open a date picker and update the delivery date controller
-                  final DateTime? pickedDate = await showDatePicker(
-                    context: context,
-                    initialDate: DateTime.now(),
-                    firstDate: DateTime.now(),
-                    lastDate: DateTime.now().add(Duration(days: 365)),
-                  );
-
-                  if (pickedDate != null) {
-                    setState(() {
-                      _deliveryDateController.text =
-                          pickedDate.toString().split(' ')[0];
-                    });
-                  }
                 },
                 validator: (value) {
                   if (value?.isEmpty ?? true) {
@@ -158,153 +168,38 @@ class _FuelQuoteFormState extends State<FuelQuoteForm> {
                   labelText: 'Total Amount Due',
                 ),
               ),
-              ElevatedButton(
-                onPressed: () {
-                  if (_formKey.currentState?.validate() ?? false) {
-                    calculateTotalAmountDue();
-                    setState(() {});
-                  }
+              MouseRegion(
+                onEnter: (_) {
+                  setState(() {
+                    _isCalculateHovered = true;
+                  });
                 },
-                style: ElevatedButton.styleFrom(
-                  primary: Color.fromRGBO(255, 163, 165, 1.0),
-                  onPrimary: Color.fromRGBO(15, 76, 92, 1.0),
-                ),
-                child: Text('Calculate'),
-              ),
-            ],
-          ),
-        ),
-      ),
-    );
-  }
-}
-
-
-class LoginApp extends StatefulWidget {
-  @override
-  _LoginAppState createState() => _LoginAppState();
-}
-
-class _LoginAppState extends State<LoginApp> {
-  String errorMessage = ''; // Stores the error message
-  Timer? timer; // Timer for error message duration
-
-  void handleLogin() {
-    String username = ''; // Get the username value from the TextField
-    String password = ''; // Get the password value from the TextField
-
-    if (username == 'admin' && password == 'password') {
-      // Clear the error message
-      setState(() {
-        errorMessage = '';
-      });
-
-      // Perform successful login logic
-    } else {
-      // Show the error message
-      setState(() {
-        errorMessage = 'Username and/or Password incorrect';
-      });
-
-      // Start the timer to clear the error message after 10 seconds
-      if (timer != null) {
-        timer!.cancel();
-      }
-      timer = Timer(Duration(seconds: 10), () {
-        setState(() {
-          errorMessage = '';
-        });
-      });
-    }
-  }
-
-  @override
-  void dispose() {
-    timer?.cancel();
-    super.dispose();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      body: Center(
-        child: Padding(
-          padding: const EdgeInsets.all(50.0),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              // Login Container
-              Container(
-                padding: EdgeInsets.all(10.0),
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(10.0),
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.grey.withOpacity(0.5),
-                      spreadRadius: 5,
-                      blurRadius: 7,
-                      offset: Offset(0, 3),
-                    ),
-                  ],
-                  gradient: LinearGradient(
-                    colors: [Colors.blue[200]!, Colors.blue[100]!],
-                    begin: Alignment.topCenter,
-                    end: Alignment.bottomCenter,
+                onExit: (_) {
+                  setState(() {
+                    _isCalculateHovered = false;
+                  });
+                },
+                child: ElevatedButton(
+                  onPressed: () {
+                    if (_formKey.currentState?.validate() ?? false) {
+                      calculateTotalAmountDue();
+                      setState(() {});
+                    }
+                  },
+                  style: ElevatedButton.styleFrom(
+                    primary: _isCalculateHovered
+                        ? Color.fromRGBO(255, 163, 165, 1.0)
+                        : Color.fromRGBO(255, 163, 165, 1.0),
+                    onPrimary: _isCalculateHovered
+                        ? Colors.white
+                        : Color.fromRGBO(15, 76, 92, 1.0),
                   ),
-                ),
-                child: Text(
-                  'Login',
-                  style: TextStyle(
-                    fontSize: 24,
-                    fontWeight: FontWeight.bold,
+                  child: Text(
+                    'Calculate',
+                    style: TextStyle(
+                      color: _isCalculateHovered ? Colors.white : Colors.black,
+                    ),
                   ),
-                ),
-              ),
-              SizedBox(height: 20), // Add space below the Login Container
-              TextField(
-                decoration: InputDecoration(
-                  border: OutlineInputBorder(),
-                  labelText: 'Username',
-                ),
-              ),
-              SizedBox(height: 20),
-              TextField(
-                obscureText: true,
-                decoration: InputDecoration(
-                  border: OutlineInputBorder(),
-                  labelText: 'Password',
-                ),
-              ),
-              SizedBox(height: 20),
-              Center(
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    // Login Button
-                    ElevatedButton(
-                      onPressed: handleLogin,
-                      child: Text('Login'),
-                    ),
-                    SizedBox(width: 10), // Add space between the buttons
-                    // Create an Account Button
-                    ElevatedButton(
-                      onPressed: () {
-                        Navigator.of(context).push(
-                          MaterialPageRoute(
-                            builder: (context) => ClientRegistration(),
-                          ),
-                        );
-                      },
-                      child: Text('Create an Account'),
-                    ),
-                  ],
-                ),
-              ),
-              SizedBox(height: 20), // Add space below the buttons
-              Text(
-                errorMessage,
-                style: TextStyle(
-                  color: Colors.red,
                 ),
               ),
             ],
