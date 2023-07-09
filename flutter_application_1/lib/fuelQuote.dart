@@ -1,4 +1,13 @@
 import 'package:flutter/material.dart';
+import 'loginPage.dart';
+
+void main() {
+  runApp(MaterialApp(
+    home: FuelQuoteForm(),
+    theme: ThemeData(
+        scaffoldBackgroundColor: const Color.fromRGBO(255, 201, 173, 0.5)),
+  ));
+}
 
 class FuelQuoteForm extends StatefulWidget {
   @override
@@ -12,7 +21,18 @@ class _FuelQuoteFormState extends State<FuelQuoteForm> {
   TextEditingController _deliveryDateController = TextEditingController();
   double _suggestedPrice = 0.0;
   double _totalAmountDue = 0.0;
-  String _deliveryAddress = '123 Main Street'; // Replace with the actual client profile data
+  String _deliveryAddress =
+      '123 Main Street'; // Replace with the actual client profile data
+
+  bool _isSignOutHovered = false;
+  bool _isCalculateHovered = false;
+
+  void signOut() {
+    Navigator.pushReplacement(
+      context,
+      MaterialPageRoute(builder: (context) => LoginApp()),
+    );
+  }
 
   @override
   void dispose() {
@@ -30,15 +50,74 @@ class _FuelQuoteFormState extends State<FuelQuoteForm> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Fuel Quote Form'),
-      ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Form(
           key: _formKey,
           child: ListView(
             children: [
+              Container(
+                padding: EdgeInsets.all(10.0),
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(10.0),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.grey.withOpacity(0.45),
+                      spreadRadius: 5,
+                      blurRadius: 7,
+                      offset: Offset(0, 3),
+                    ),
+                  ],
+                  gradient: LinearGradient(
+                    colors: [Color(0xFF9EBC9F), Color(0xFF9EBC9F)],
+                    begin: Alignment.topCenter,
+                    end: Alignment.bottomCenter,
+                  ),
+                ),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      'Fuel Quote Form',
+                      style: TextStyle(
+                        fontSize: 24,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.white.withOpacity(1),
+                      ),
+                    ),
+                    MouseRegion(
+                      onEnter: (_) {
+                        setState(() {
+                          _isSignOutHovered = true;
+                        });
+                      },
+                      onExit: (_) {
+                        setState(() {
+                          _isSignOutHovered = false;
+                        });
+                      },
+                      child: ElevatedButton(
+                        onPressed: signOut,
+                        style: ElevatedButton.styleFrom(
+                          primary: _isSignOutHovered
+                              ? Color.fromRGBO(255, 163, 165, 1.0)
+                              : Color.fromRGBO(255, 163, 165, 1.0),
+                          onPrimary: _isSignOutHovered
+                              ? Colors.white
+                              : Color.fromRGBO(15, 76, 92, 1.0),
+                        ),
+                        child: Text(
+                          'Sign Out',
+                          style: TextStyle(
+                            color:
+                                _isSignOutHovered ? Colors.white : Colors.black,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
               TextFormField(
                 controller: _gallonsController,
                 keyboardType: TextInputType.number,
@@ -57,19 +136,6 @@ class _FuelQuoteFormState extends State<FuelQuoteForm> {
                 keyboardType: TextInputType.datetime,
                 onTap: () async {
                   // Open a date picker and update the delivery date controller
-                  final DateTime? pickedDate = await showDatePicker(
-                    context: context,
-                    initialDate: DateTime.now(),
-                    firstDate: DateTime.now(),
-                    lastDate: DateTime.now().add(Duration(days: 365)),
-                  );
-
-                  if (pickedDate != null) {
-                    setState(() {
-                      _deliveryDateController.text =
-                          pickedDate.toString().split(' ')[0];
-                    });
-                  }
                 },
                 validator: (value) {
                   if (value?.isEmpty ?? true) {
@@ -102,14 +168,39 @@ class _FuelQuoteFormState extends State<FuelQuoteForm> {
                   labelText: 'Total Amount Due',
                 ),
               ),
-              ElevatedButton(
-                onPressed: () {
-                  if (_formKey.currentState?.validate() ?? false) {
-                    calculateTotalAmountDue();
-                    setState(() {});
-                  }
+              MouseRegion(
+                onEnter: (_) {
+                  setState(() {
+                    _isCalculateHovered = true;
+                  });
                 },
-                child: Text('Calculate'),
+                onExit: (_) {
+                  setState(() {
+                    _isCalculateHovered = false;
+                  });
+                },
+                child: ElevatedButton(
+                  onPressed: () {
+                    if (_formKey.currentState?.validate() ?? false) {
+                      calculateTotalAmountDue();
+                      setState(() {});
+                    }
+                  },
+                  style: ElevatedButton.styleFrom(
+                    primary: _isCalculateHovered
+                        ? Color.fromRGBO(255, 163, 165, 1.0)
+                        : Color.fromRGBO(255, 163, 165, 1.0),
+                    onPrimary: _isCalculateHovered
+                        ? Colors.white
+                        : Color.fromRGBO(15, 76, 92, 1.0),
+                  ),
+                  child: Text(
+                    'Calculate',
+                    style: TextStyle(
+                      color: _isCalculateHovered ? Colors.white : Colors.black,
+                    ),
+                  ),
+                ),
               ),
             ],
           ),
@@ -117,10 +208,4 @@ class _FuelQuoteFormState extends State<FuelQuoteForm> {
       ),
     );
   }
-}
-
-void main() {
-  runApp(MaterialApp(
-    home: FuelQuoteForm(),
-  ));
 }

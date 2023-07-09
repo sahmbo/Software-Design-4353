@@ -1,29 +1,17 @@
-import 'package:flutter/material.dart'; //super important
-import 'clientReg.dart'; //allows for buttons to actually work
+import 'package:flutter/material.dart';
+import 'package:flutter_application_1/controller/loginPageController.dart';
+import 'package:flutter_application_1/model/loginPageRepo.dart';
+import 'package:flutter_application_1/fuelQuote.dart';
+import 'package:flutter_application_1/clientReg.dart';
 import 'dart:async';
 
 void main() {
-  runApp(MyApp());
-}
-
-class MyApp extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
-      home: Navigator(
-        pages: [
-          MaterialPage(
-            child: LoginApp(),
-          ),
-        ],
-        onPopPage: (route, result) => route.didPop(result),
-      ),
-    );
-  }
+  runApp(
+    MaterialApp(
+      title: 'My App',
+      home: LoginApp(),
+    ),
+  );
 }
 
 class LoginApp extends StatefulWidget {
@@ -32,27 +20,34 @@ class LoginApp extends StatefulWidget {
 }
 
 class _LoginAppState extends State<LoginApp> {
-  String errorMessage = ''; // Stores the error message
-  Timer? timer; // Timer for error message duration
+  TextEditingController _usernameController = TextEditingController();
+  TextEditingController _passwordController = TextEditingController();
+  UserController _userController = UserController();
+  String errorMessage = '';
+  Timer? timer;
 
-  void handleLogin() {
-    String username = ''; // Get the username value from the TextField
-    String password = ''; // Get the password value from the TextField
+  void handleLogin() async {
+    String username = _usernameController.text;
+    String password = _passwordController.text;
 
-    if (username == 'admin' && password == 'password') {
-      // Clear the error message
+    User? savedUser = await _userController.fetchUser();
+    if (savedUser != null &&
+        savedUser.username == username &&
+        savedUser.password == password) {
       setState(() {
         errorMessage = '';
       });
 
-      // Perform successful login logic
+      Navigator.of(context).pushReplacement(
+        MaterialPageRoute(
+          builder: (context) => FuelQuoteForm(),
+        ),
+      );
     } else {
-      // Show the error message
       setState(() {
         errorMessage = 'Username and/or Password incorrect';
       });
 
-      // Start the timer to clear the error message after 10 seconds
       if (timer != null) {
         timer!.cancel();
       }
@@ -79,7 +74,6 @@ class _LoginAppState extends State<LoginApp> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
-              // Login Container
               Container(
                 padding: EdgeInsets.all(10.0),
                 decoration: BoxDecoration(
@@ -106,8 +100,9 @@ class _LoginAppState extends State<LoginApp> {
                   ),
                 ),
               ),
-              SizedBox(height: 20), // Add space below the Login Container
+              SizedBox(height: 20),
               TextField(
+                controller: _usernameController,
                 decoration: InputDecoration(
                   border: OutlineInputBorder(),
                   labelText: 'Username',
@@ -115,6 +110,7 @@ class _LoginAppState extends State<LoginApp> {
               ),
               SizedBox(height: 20),
               TextField(
+                controller: _passwordController,
                 obscureText: true,
                 decoration: InputDecoration(
                   border: OutlineInputBorder(),
@@ -126,13 +122,11 @@ class _LoginAppState extends State<LoginApp> {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    // Login Button
                     ElevatedButton(
                       onPressed: handleLogin,
                       child: Text('Login'),
                     ),
-                    SizedBox(width: 10), // Add space between the buttons
-                    // Create an Account Button
+                    SizedBox(width: 10),
                     ElevatedButton(
                       onPressed: () {
                         Navigator.of(context).push(
@@ -146,7 +140,7 @@ class _LoginAppState extends State<LoginApp> {
                   ],
                 ),
               ),
-              SizedBox(height: 20), // Add space below the buttons
+              SizedBox(height: 20),
               Text(
                 errorMessage,
                 style: TextStyle(
