@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'controller/loginPageController.dart';
-import 'model/loginPageRepo.dart';
+import 'model/loginPageModel.dart';
 import 'loginPage.dart'; // Import the LoginPage
 
 class ClientRegistration extends StatefulWidget {

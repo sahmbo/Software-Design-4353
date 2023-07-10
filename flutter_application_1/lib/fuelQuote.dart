@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'loginPage.dart';
+import 'package:flutter_application_1/controller/fuelQuoteController.dart';
+
 
 void main() {
   runApp(MaterialApp(
@@ -16,13 +18,11 @@ class FuelQuoteForm extends StatefulWidget {
 
 class _FuelQuoteFormState extends State<FuelQuoteForm> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  final FuelQuoteController _fuelQuoteController = FuelQuoteController();
 
   TextEditingController _gallonsController = TextEditingController();
   TextEditingController _deliveryDateController = TextEditingController();
-  double _suggestedPrice = 0.0;
-  double _totalAmountDue = 0.0;
-  String _deliveryAddress =
-      '123 Main Street'; // Replace with the actual client profile data
+  String _deliveryAddress = '123 Main Street'; // Replace with the actual client profile data
 
   bool _isSignOutHovered = false;
   bool _isCalculateHovered = false;
@@ -43,12 +43,17 @@ class _FuelQuoteFormState extends State<FuelQuoteForm> {
 
   void calculateTotalAmountDue() {
     double gallons = double.tryParse(_gallonsController.text) ?? 0.0;
-    double price = _suggestedPrice;
-    _totalAmountDue = gallons * price;
+    _fuelQuoteController.updateGallonsRequested(gallons);
+    _fuelQuoteController.calculateTotalAmountDue();
+
+    print('Gallons: ${_fuelQuoteController.fuelQuote.gallonsRequested}');
+    print('Total amount due: ${_fuelQuoteController.fuelQuote.totalAmountDue}');
   }
 
   @override
   Widget build(BuildContext context) {
+    var _suggestedPrice = 0;
+    var _totalAmountDue = 0;
     return Scaffold(
       body: Padding(
         padding: const EdgeInsets.all(16.0),

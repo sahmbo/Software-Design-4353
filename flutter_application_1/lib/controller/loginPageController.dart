@@ -1,6 +1,6 @@
 import 'dart:convert';
 import 'package:shared_preferences/shared_preferences.dart';
-import '../model/loginPageRepo.dart';
+import '../model/loginPageModel.dart';
 
 class UserController {
   Future<void> saveUser(User user) async {

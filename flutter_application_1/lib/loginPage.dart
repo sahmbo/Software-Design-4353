@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/controller/loginPageController.dart';
-import 'package:flutter_application_1/model/loginPageRepo.dart';
+import 'package:flutter_application_1/model/loginPageModel.dart';
 import 'package:flutter_application_1/fuelQuote.dart';
 import 'package:flutter_application_1/clientReg.dart';
 import 'dart:async';
