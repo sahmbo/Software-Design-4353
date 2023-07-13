@@ -4,6 +4,8 @@ import 'model/loginPageModel.dart';
 import 'loginPage.dart'; // Import the LoginPage
 
 class ClientRegistration extends StatefulWidget {
+  const ClientRegistration({super.key});
+
   @override
   _ClientRegistrationState createState() => _ClientRegistrationState();
 }
@@ -17,7 +19,7 @@ class _ClientRegistrationState extends State<ClientRegistration> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Client Registration'),
+        title: const Text('Client Registration'),
       ),
       body: Center(
         child: Padding(
@@ -27,21 +29,21 @@ class _ClientRegistrationState extends State<ClientRegistration> {
             children: <Widget>[
               TextField(
                 controller: _usernameController,
-                decoration: InputDecoration(
+                decoration: const InputDecoration(
                   border: OutlineInputBorder(),
                   labelText: 'New Username',
                 ),
               ),
-              SizedBox(height: 20),
+              const SizedBox(height: 20),
               TextField(
                 controller: _passwordController,
                 obscureText: true,
-                decoration: InputDecoration(
+                decoration: const InputDecoration(
                   border: OutlineInputBorder(),
                   labelText: 'New Password',
                 ),
               ),
-              SizedBox(height: 20),
+              const SizedBox(height: 20),
               ElevatedButton(
                 onPressed: () async {
                   User user = User(
@@ -53,11 +55,11 @@ class _ClientRegistrationState extends State<ClientRegistration> {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => LoginApp(),
+                      builder: (context) => const LoginApp(),
                     ),
                   );
                 },
-                child: Text('Register'),
+                child: const Text('Register'),
               ),
             ],
           ),

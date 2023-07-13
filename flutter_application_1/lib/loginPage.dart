@@ -7,7 +7,7 @@ import 'dart:async';
 
 void main() {
   runApp(
-    MaterialApp(
+    const MaterialApp(
       title: 'My App',
       home: LoginApp(),
     ),
@@ -15,14 +15,16 @@ void main() {
 }
 
 class LoginApp extends StatefulWidget {
+  const LoginApp({super.key});
+
   @override
   _LoginAppState createState() => _LoginAppState();
 }
 
 class _LoginAppState extends State<LoginApp> {
-  TextEditingController _usernameController = TextEditingController();
-  TextEditingController _passwordController = TextEditingController();
-  UserController _userController = UserController();
+  final TextEditingController _usernameController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
+  final UserController _userController = UserController();
   String errorMessage = '';
   Timer? timer;
 
@@ -40,7 +42,7 @@ class _LoginAppState extends State<LoginApp> {
 
       Navigator.of(context).pushReplacement(
         MaterialPageRoute(
-          builder: (context) => FuelQuoteForm(),
+          builder: (context) => const FuelQuoteForm(),
         ),
       );
     } else {
@@ -51,7 +53,7 @@ class _LoginAppState extends State<LoginApp> {
       if (timer != null) {
         timer!.cancel();
       }
-      timer = Timer(Duration(seconds: 10), () {
+      timer = Timer(const Duration(seconds: 10), () {
         setState(() {
           errorMessage = '';
         });
@@ -75,7 +77,7 @@ class _LoginAppState extends State<LoginApp> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
               Container(
-                padding: EdgeInsets.all(10.0),
+                padding: const EdgeInsets.all(10.0),
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(10.0),
                   boxShadow: [
@@ -83,7 +85,7 @@ class _LoginAppState extends State<LoginApp> {
                       color: Colors.grey.withOpacity(0.5),
                       spreadRadius: 5,
                       blurRadius: 7,
-                      offset: Offset(0, 3),
+                      offset: const Offset(0, 3),
                     ),
                   ],
                   gradient: LinearGradient(
@@ -92,7 +94,7 @@ class _LoginAppState extends State<LoginApp> {
                     end: Alignment.bottomCenter,
                   ),
                 ),
-                child: Text(
+                child: const Text(
                   'Login',
                   style: TextStyle(
                     fontSize: 24,
@@ -100,52 +102,52 @@ class _LoginAppState extends State<LoginApp> {
                   ),
                 ),
               ),
-              SizedBox(height: 20),
+              const SizedBox(height: 20),
               TextField(
                 key: ValueKey('UsernameField'),
                 controller: _usernameController,
-                decoration: InputDecoration(
+                decoration: const InputDecoration(
                   border: OutlineInputBorder(),
                   labelText: 'Username',
                 ),
               ),
-              SizedBox(height: 20),
+              const SizedBox(height: 20),
               TextField(
                 key: ValueKey('PasswordField'),
                 controller: _passwordController,
                 obscureText: true,
-                decoration: InputDecoration(
+                decoration: const InputDecoration(
                   border: OutlineInputBorder(),
                   labelText: 'Password',
                 ),
               ),
-              SizedBox(height: 20),
+              const SizedBox(height: 20),
               Center(
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     ElevatedButton(
                       onPressed: handleLogin,
-                      child: Text('Login'),
+                      child: const Text('Login'),
                     ),
-                    SizedBox(width: 10),
+                    const SizedBox(width: 10),
                     ElevatedButton(
                       onPressed: () {
                         Navigator.of(context).push(
                           MaterialPageRoute(
-                            builder: (context) => ClientRegistration(),
+                            builder: (context) => const ClientRegistration(),
                           ),
                         );
                       },
-                      child: Text('Create an Account'),
+                      child: const Text('Create an Account'),
                     ),
                   ],
                 ),
               ),
-              SizedBox(height: 20),
+              const SizedBox(height: 20),
               Text(
                 errorMessage,
-                style: TextStyle(
+                style: const TextStyle(
                   color: Colors.red,
                 ),
               ),

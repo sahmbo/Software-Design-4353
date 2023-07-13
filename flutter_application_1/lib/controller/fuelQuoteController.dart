@@ -1,10 +1,9 @@
-import 'package:flutter_application_1/model/loginPageModel.dart';
 import '../model/fuelQuoteModel.dart';
 //import 'package:flutter/material.dart';
 
 
 class FuelQuoteController {
-  FuelQuote _fuelQuote = FuelQuote(
+  final FuelQuote _fuelQuote = FuelQuote(
     gallonsRequested: 0.0,
     deliveryDate: DateTime.now(),
     suggestedPrice: 0.0,

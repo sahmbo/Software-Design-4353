@@ -1,19 +1,23 @@
 import 'package:flutter/material.dart';
 
 void main() {
-  runApp(ClientManagementApp());
+  runApp(const ClientManagementApp());
 }
 
 class ClientManagementApp extends StatelessWidget {
+  const ClientManagementApp({super.key});
+
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return const MaterialApp(
       home: ClientManagement(),
     );
   }
 }
 
 class ClientManagement extends StatefulWidget {
+  const ClientManagement({super.key});
+
   @override
   _ClientManagementState createState() => _ClientManagementState();
 }
@@ -91,7 +95,7 @@ class _ClientManagementState extends State<ClientManagement> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Client Profile'),
+        title: const Text('Client Profile'),
       ),
       body: Center(
         child: Padding(
@@ -104,7 +108,7 @@ class _ClientManagementState extends State<ClientManagement> {
                   // Full Name Field
                   TextFormField(
                     maxLength: 50,
-                    decoration: InputDecoration(
+                    decoration: const InputDecoration(
                       border: OutlineInputBorder(),
                       labelText: 'Full Name',
                       counterText: '',
@@ -117,12 +121,12 @@ class _ClientManagementState extends State<ClientManagement> {
                     },
                   ),
 
-                  SizedBox(height: 10),
+                  const SizedBox(height: 10),
 
                   // Address 1 Field
                   TextFormField(
                     maxLength: 100,
-                    decoration: InputDecoration(
+                    decoration: const InputDecoration(
                       border: OutlineInputBorder(),
                       labelText: 'Address 1',
                       counterText: '',
@@ -135,12 +139,12 @@ class _ClientManagementState extends State<ClientManagement> {
                     },
                   ),
 
-                  SizedBox(height: 10),
+                  const SizedBox(height: 10),
 
                   // Address 2 Field
                   TextFormField(
                     maxLength: 100,
-                    decoration: InputDecoration(
+                    decoration: const InputDecoration(
                       border: OutlineInputBorder(),
                       labelText: 'Address 2',
                       counterText: '',
@@ -153,12 +157,12 @@ class _ClientManagementState extends State<ClientManagement> {
                     },
                   ),
 
-                  SizedBox(height: 10),
+                  const SizedBox(height: 10),
 
                   // City Field
                   TextFormField(
                     maxLength: 100,
-                    decoration: InputDecoration(
+                    decoration: const InputDecoration(
                       border: OutlineInputBorder(),
                       labelText: 'City',
                       counterText: '',
@@ -171,7 +175,7 @@ class _ClientManagementState extends State<ClientManagement> {
                     },
                   ),
 
-                  SizedBox(height: 10),
+                  const SizedBox(height: 10),
 
                   DropdownButton<String>(
                     value: selectedItem,
@@ -188,12 +192,12 @@ class _ClientManagementState extends State<ClientManagement> {
                     }).toList(),
                   ),
 
-                  SizedBox(height: 10),
+                  const SizedBox(height: 10),
 
                   // Zipcode Field
                   TextFormField(
                     maxLength: 9,
-                    decoration: InputDecoration(
+                    decoration: const InputDecoration(
                       border: OutlineInputBorder(),
                       labelText: 'Zipcode',
                       counterText: '',
@@ -206,7 +210,7 @@ class _ClientManagementState extends State<ClientManagement> {
                     },
                   ),
 
-                  SizedBox(height: 10),
+                  const SizedBox(height: 10),
 
                   ElevatedButton(
                     onPressed: () {
@@ -216,7 +220,7 @@ class _ClientManagementState extends State<ClientManagement> {
                         // Alert user when form is invalid
                       }
                     },
-                    child: Text('Complete'),
+                    child: const Text('Complete'),
                   ),
                 ]),
           ),
