@@ -1,6 +1,6 @@
 import 'dart:convert';
 import 'package:shared_preferences/shared_preferences.dart';
-import '../model/loginPageRepo.dart';
+import '../model/loginPageModel.dart';
 
 class UserController {
   Future<void> saveUser(User user) async {
@@ -8,7 +8,7 @@ class UserController {
     await prefs.setString('user', jsonEncode(user.toJson()));
   }
 
-  Future<User?> fetchUser() async {
+  Future<User?> fetchUser(String username, String password) async {
     final prefs = await SharedPreferences.getInstance();
     final userData = prefs.getString('user');
 
@@ -18,7 +18,8 @@ class UserController {
 
     Map<String, dynamic> decodedUserData = jsonDecode(userData);
     return User(
-        username: decodedUserData['username'],
-        password: decodedUserData['password']);
+      username: decodedUserData['username'] as String,
+      password: decodedUserData['password'] as String,
+    );
   }
 }

@@ -1,28 +1,30 @@
 import 'package:flutter/material.dart';
 import 'loginPage.dart';
+import 'package:flutter_application_1/controller/fuelQuoteController.dart';
+
 
 void main() {
   runApp(MaterialApp(
-    home: FuelQuoteForm(),
+    home: const FuelQuoteForm(),
     theme: ThemeData(
         scaffoldBackgroundColor: const Color.fromRGBO(255, 201, 173, 0.5)),
   ));
 }
 
 class FuelQuoteForm extends StatefulWidget {
+  const FuelQuoteForm({super.key});
+
   @override
   _FuelQuoteFormState createState() => _FuelQuoteFormState();
 }
 
 class _FuelQuoteFormState extends State<FuelQuoteForm> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  final FuelQuoteController _fuelQuoteController = FuelQuoteController();
 
-  TextEditingController _gallonsController = TextEditingController();
-  TextEditingController _deliveryDateController = TextEditingController();
-  double _suggestedPrice = 0.0;
-  double _totalAmountDue = 0.0;
-  String _deliveryAddress =
-      '123 Main Street'; // Replace with the actual client profile data
+  final TextEditingController _gallonsController = TextEditingController();
+  final TextEditingController _deliveryDateController = TextEditingController();
+  final String _deliveryAddress = '123 Main Street'; // Replace with the actual client profile data
 
   bool _isSignOutHovered = false;
   bool _isCalculateHovered = false;
@@ -30,7 +32,7 @@ class _FuelQuoteFormState extends State<FuelQuoteForm> {
   void signOut() {
     Navigator.pushReplacement(
       context,
-      MaterialPageRoute(builder: (context) => LoginApp()),
+      MaterialPageRoute(builder: (context) => const LoginApp()),
     );
   }
 
@@ -43,12 +45,17 @@ class _FuelQuoteFormState extends State<FuelQuoteForm> {
 
   void calculateTotalAmountDue() {
     double gallons = double.tryParse(_gallonsController.text) ?? 0.0;
-    double price = _suggestedPrice;
-    _totalAmountDue = gallons * price;
+    _fuelQuoteController.updateGallonsRequested(gallons);
+    _fuelQuoteController.calculateTotalAmountDue();
+
+    print('Gallons: ${_fuelQuoteController.fuelQuote.gallonsRequested}');
+    print('Total amount due: ${_fuelQuoteController.fuelQuote.totalAmountDue}');
   }
 
   @override
   Widget build(BuildContext context) {
+    var suggestedPrice = 0;
+    var totalAmountDue = 0;
     return Scaffold(
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -57,7 +64,7 @@ class _FuelQuoteFormState extends State<FuelQuoteForm> {
           child: ListView(
             children: [
               Container(
-                padding: EdgeInsets.all(10.0),
+                padding: const EdgeInsets.all(10.0),
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(10.0),
                   boxShadow: [
@@ -65,10 +72,10 @@ class _FuelQuoteFormState extends State<FuelQuoteForm> {
                       color: Colors.grey.withOpacity(0.45),
                       spreadRadius: 5,
                       blurRadius: 7,
-                      offset: Offset(0, 3),
+                      offset: const Offset(0, 3),
                     ),
                   ],
-                  gradient: LinearGradient(
+                  gradient: const LinearGradient(
                     colors: [Color(0xFF9EBC9F), Color(0xFF9EBC9F)],
                     begin: Alignment.topCenter,
                     end: Alignment.bottomCenter,
@@ -99,12 +106,11 @@ class _FuelQuoteFormState extends State<FuelQuoteForm> {
                       child: ElevatedButton(
                         onPressed: signOut,
                         style: ElevatedButton.styleFrom(
-                          primary: _isSignOutHovered
-                              ? Color.fromRGBO(255, 163, 165, 1.0)
-                              : Color.fromRGBO(255, 163, 165, 1.0),
-                          onPrimary: _isSignOutHovered
+                          foregroundColor: _isSignOutHovered
                               ? Colors.white
-                              : Color.fromRGBO(15, 76, 92, 1.0),
+                              : const Color.fromRGBO(15, 76, 92, 1.0), backgroundColor: _isSignOutHovered
+                              ? const Color.fromRGBO(255, 163, 165, 1.0)
+                              : const Color.fromRGBO(255, 163, 165, 1.0),
                         ),
                         child: Text(
                           'Sign Out',
@@ -127,7 +133,7 @@ class _FuelQuoteFormState extends State<FuelQuoteForm> {
                   }
                   return null;
                 },
-                decoration: InputDecoration(
+                decoration: const InputDecoration(
                   labelText: 'Gallons Requested',
                 ),
               ),
@@ -143,28 +149,28 @@ class _FuelQuoteFormState extends State<FuelQuoteForm> {
                   }
                   return null;
                 },
-                decoration: InputDecoration(
+                decoration: const InputDecoration(
                   labelText: 'Delivery Date',
                 ),
               ),
               TextFormField(
                 initialValue: _deliveryAddress,
                 enabled: false,
-                decoration: InputDecoration(
+                decoration: const InputDecoration(
                   labelText: 'Delivery Address',
                 ),
               ),
               TextFormField(
-                initialValue: _suggestedPrice.toString(),
+                initialValue: suggestedPrice.toString(),
                 enabled: false,
-                decoration: InputDecoration(
+                decoration: const InputDecoration(
                   labelText: 'Suggested Price / gallon',
                 ),
               ),
               TextFormField(
-                initialValue: _totalAmountDue.toString(),
+                initialValue: totalAmountDue.toString(),
                 enabled: false,
-                decoration: InputDecoration(
+                decoration: const InputDecoration(
                   labelText: 'Total Amount Due',
                 ),
               ),
@@ -187,12 +193,11 @@ class _FuelQuoteFormState extends State<FuelQuoteForm> {
                     }
                   },
                   style: ElevatedButton.styleFrom(
-                    primary: _isCalculateHovered
-                        ? Color.fromRGBO(255, 163, 165, 1.0)
-                        : Color.fromRGBO(255, 163, 165, 1.0),
-                    onPrimary: _isCalculateHovered
+                    foregroundColor: _isCalculateHovered
                         ? Colors.white
-                        : Color.fromRGBO(15, 76, 92, 1.0),
+                        : const Color.fromRGBO(15, 76, 92, 1.0), backgroundColor: _isCalculateHovered
+                        ? const Color.fromRGBO(255, 163, 165, 1.0)
+                        : const Color.fromRGBO(255, 163, 165, 1.0),
                   ),
                   child: Text(
                     'Calculate',
