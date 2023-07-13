@@ -30,7 +30,7 @@ class _LoginAppState extends State<LoginApp> {
     String username = _usernameController.text;
     String password = _passwordController.text;
 
-    User? savedUser = await _userController.fetchUser();
+    User? savedUser = await _userController.fetchUser(username, password);
     if (savedUser != null &&
         savedUser.username == username &&
         savedUser.password == password) {
@@ -102,6 +102,7 @@ class _LoginAppState extends State<LoginApp> {
               ),
               SizedBox(height: 20),
               TextField(
+                key: ValueKey('UsernameField'),
                 controller: _usernameController,
                 decoration: InputDecoration(
                   border: OutlineInputBorder(),
@@ -110,6 +111,7 @@ class _LoginAppState extends State<LoginApp> {
               ),
               SizedBox(height: 20),
               TextField(
+                key: ValueKey('PasswordField'),
                 controller: _passwordController,
                 obscureText: true,
                 decoration: InputDecoration(
