@@ -99,51 +99,80 @@ class _LoginAppState extends State<LoginApp> {
                   style: TextStyle(
                     fontSize: 24,
                     fontWeight: FontWeight.bold,
+                    color: Colors.black,
                   ),
                 ),
               ),
               const SizedBox(height: 20),
-              TextField(
-                key: ValueKey('UsernameField'),
-                controller: _usernameController,
-                decoration: const InputDecoration(
-                  border: OutlineInputBorder(),
-                  labelText: 'Username',
+              Container(
+                width: 500,
+                child: TextField(
+                  key: ValueKey('UsernameField'),
+                  controller: _usernameController,
+                  decoration: InputDecoration(
+                    filled: true,
+                    fillColor: Colors.grey[200],
+                    labelText: 'Username',
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(10.0),
+                    ),
+                  ),
                 ),
               ),
               const SizedBox(height: 20),
-              TextField(
-                key: ValueKey('PasswordField'),
-                controller: _passwordController,
-                obscureText: true,
-                decoration: const InputDecoration(
-                  border: OutlineInputBorder(),
-                  labelText: 'Password',
+              Container(
+                width: 500,
+                child: TextField(
+                  key: ValueKey('PasswordField'),
+                  controller: _passwordController,
+                  obscureText: true,
+                  decoration: InputDecoration(
+                    filled: true,
+                    fillColor: Colors.grey[200],
+                    labelText: 'Password',
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(10.0),
+                    ),
+                  ),
                 ),
               ),
               const SizedBox(height: 20),
-              Center(
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    ElevatedButton(
-                      key: ValueKey('LoginButton'),
-                      onPressed: handleLogin,
-                      child: const Text('Login'),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  ElevatedButton(
+                    key: ValueKey('LoginButton'),
+                    onPressed: handleLogin,
+                    child: const Text('Login'),
+                    style: ElevatedButton.styleFrom(
+                      primary: Colors.blue,
+                      onPrimary: Colors.white,
+                      padding:
+                          EdgeInsets.symmetric(horizontal: 50, vertical: 10),
+                      textStyle:
+                          TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                     ),
-                    const SizedBox(width: 10),
-                    ElevatedButton(
-                      onPressed: () {
-                        Navigator.of(context).push(
-                          MaterialPageRoute(
-                            builder: (context) => const ClientRegistration(),
-                          ),
-                        );
-                      },
-                      child: const Text('Create an Account'),
+                  ),
+                  const SizedBox(width: 10),
+                  ElevatedButton(
+                    onPressed: () {
+                      Navigator.of(context).push(
+                        MaterialPageRoute(
+                          builder: (context) => const ClientRegistration(),
+                        ),
+                      );
+                    },
+                    child: const Text('Create an Account'),
+                    style: ElevatedButton.styleFrom(
+                      primary: Colors.blue,
+                      onPrimary: Colors.white,
+                      padding:
+                          EdgeInsets.symmetric(horizontal: 50, vertical: 10),
+                      textStyle:
+                          TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                     ),
-                  ],
-                ),
+                  ),
+                ],
               ),
               const SizedBox(height: 20),
               Text(
