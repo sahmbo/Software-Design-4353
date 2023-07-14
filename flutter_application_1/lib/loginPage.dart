@@ -127,6 +127,7 @@ class _LoginAppState extends State<LoginApp> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     ElevatedButton(
+                      key: ValueKey('LoginButton'),
                       onPressed: handleLogin,
                       child: const Text('Login'),
                     ),
