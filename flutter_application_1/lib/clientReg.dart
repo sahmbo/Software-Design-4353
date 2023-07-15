@@ -15,6 +15,26 @@ class _ClientRegistrationState extends State<ClientRegistration> {
   final _passwordController = TextEditingController();
   final _userController = UserController();
 
+  void showErrorDialog(String message) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text('Error'),
+          content: Text(message),
+          actions: <Widget>[
+            TextButton(
+              child: const Text('Ok'),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -46,9 +66,22 @@ class _ClientRegistrationState extends State<ClientRegistration> {
               const SizedBox(height: 20),
               ElevatedButton(
                 onPressed: () async {
-                  User user = User(
-                      username: _usernameController.text,
-                      password: _passwordController.text);
+                  String username = _usernameController.text;
+                  String password = _passwordController.text;
+
+                  if (username.length < 4 || username.length > 12) {
+                    showErrorDialog(
+                        'Username should be between 4 and 12 characters long');
+                    return;
+                  }
+
+                  if (password.length < 6 || password.length > 12) {
+                    showErrorDialog(
+                        'Password should be between 6 and 12 characters long');
+                    return;
+                  }
+
+                  User user = User(username: username, password: password);
                   await _userController.saveUser(user);
 
                   // Redirect to LoginPage
