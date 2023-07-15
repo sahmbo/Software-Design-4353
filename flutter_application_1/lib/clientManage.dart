@@ -125,6 +125,7 @@ class _ClientManagementState extends State<ClientManagement> {
                 children: <Widget>[
                   // Full Name Field
                   TextFormField(
+                    key: Key('fullName_field'), // Update the key value
                     controller: fullNameController,
                     maxLength: 50,
                     decoration: const InputDecoration(
@@ -145,6 +146,7 @@ class _ClientManagementState extends State<ClientManagement> {
 
                   // Address 1 Field
                   TextFormField(
+                    key: Key('address1_field'), // Update the key value
                     controller: address1Controller,
                     maxLength: 100,
                     decoration: const InputDecoration(
@@ -165,6 +167,7 @@ class _ClientManagementState extends State<ClientManagement> {
 
                   // Address 2 Field
                   TextFormField(
+                    key: Key('address2_field'), // Update the key value
                     controller: address2Controller,
                     maxLength: 100,
                     decoration: const InputDecoration(
@@ -172,19 +175,14 @@ class _ClientManagementState extends State<ClientManagement> {
                       labelText: 'Address 2',
                       counterText: '',
                     ),
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return 'Please fill out this field';
-                      }
-                      return null;
-                    },
-                    
+      
                   ),
 
                   const SizedBox(height: 10),
 
                   // City Field
                   TextFormField(
+                    key: Key('city_field'), // Update the key value
                     controller: cityController,
                     maxLength: 100,
                     decoration: const InputDecoration(
@@ -223,6 +221,7 @@ class _ClientManagementState extends State<ClientManagement> {
 
                   // Zipcode Field
                   TextFormField(
+                    key: Key('Zipcode_field'), // Update the key value
                     controller: zipcodeController,
                     maxLength: 9,
                     decoration: const InputDecoration(
