@@ -10,4 +10,21 @@ class User {
       'password': password,
     };
   }
+
+  User copyWith({
+    String? username,
+    String? password,
+  }) {
+    return User(
+      username: username ?? this.username,
+      password: password ?? this.password,
+    );
+  }
+
+  factory User.fromJson(Map<String, dynamic> json) {
+    return User(
+      username: json['username'] as String,
+      password: json['password'] as String,
+    );
+  }
 }

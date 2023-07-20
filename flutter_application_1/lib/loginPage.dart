@@ -41,9 +41,7 @@ class _LoginAppState extends State<LoginApp> {
     String password = _passwordController.text;
 
     User? savedUser = await _userController.fetchUser(username, password);
-    if (savedUser != null &&
-        savedUser.username == username &&
-        savedUser.password == password) {
+    if (savedUser != null) {
       setState(() {
         errorMessage = '';
       });
