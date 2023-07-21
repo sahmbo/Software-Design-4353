@@ -1,6 +1,11 @@
  import 'package:flutter/material.dart';
 import 'package:flutter_application_1/controller/clientManageController.dart';
 import 'package:flutter_application_1/fuelQuote.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter_application_1/quoteHistoryPage.dart';
+
+import 'loginPage.dart';
+//import 'package:firebase_core/firebase_core.dart';
 
 void main() {
   runApp(const ClientManagementApp());
@@ -112,9 +117,58 @@ class _ClientManagementState extends State<ClientManagement> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      //nav bar
       appBar: AppBar(
         title: const Text('Client Profile'),
+        actions: <Widget>[
+          IconButton(
+            icon: Icon(Icons.account_circle),
+            onPressed: () {
+              Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => ClientManagementApp(),
+                ),
+              );
+            },
+          ),
+          IconButton(
+            icon: Icon(Icons.local_gas_station),
+            onPressed: () {
+              Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => FuelQuoteForm(),
+                ),
+              );
+            },
+          ),
+          IconButton(
+            icon: Icon(Icons.history),
+            onPressed: () {
+              Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => QuoteHistoryPage(),
+                ),
+              );
+            },
+          ),
+          IconButton(
+            icon: Icon(Icons.logout),
+            onPressed: () {
+              Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => LoginApp(),
+                ),
+              );
+            },
+          ),
+        ],
       ),
+      //end nav bar
+
       body: Center(
         child: Padding(
           padding: const EdgeInsets.all(50.0),
@@ -139,7 +193,6 @@ class _ClientManagementState extends State<ClientManagement> {
                       }
                       return null;
                     },
-                    
                   ),
 
                   const SizedBox(height: 10),
@@ -160,7 +213,6 @@ class _ClientManagementState extends State<ClientManagement> {
                       }
                       return null;
                     },
-                    
                   ),
 
                   const SizedBox(height: 10),
@@ -175,7 +227,6 @@ class _ClientManagementState extends State<ClientManagement> {
                       labelText: 'Address 2',
                       counterText: '',
                     ),
-      
                   ),
 
                   const SizedBox(height: 10),
@@ -196,7 +247,6 @@ class _ClientManagementState extends State<ClientManagement> {
                       }
                       return null;
                     },
-                    
                   ),
 
                   const SizedBox(height: 10),
@@ -235,13 +285,12 @@ class _ClientManagementState extends State<ClientManagement> {
                       }
                       return null;
                     },
-                    
                   ),
 
                   const SizedBox(height: 10),
 
                   ElevatedButton(
-                    onPressed: () {
+                    onPressed: () async {
                       if (_formKey.currentState!.validate()) {
                         // Do something when form is valid
                         profileController.saveFullName(fullNameController.text);
@@ -250,10 +299,40 @@ class _ClientManagementState extends State<ClientManagement> {
                         profileController.saveCity(cityController.text);
                         profileController.saveZipcode(zipcodeController.text);
                         //print(profileController.clientManage);
+                        // Navigator.push(
+                        //   context,
+                        //   MaterialPageRoute(builder: (context) => FuelQuoteForm()),
+                        // );
+                        String fullName = fullNameController.text;
+                        String address1 = address1Controller.text;
+                        String address2 = address2Controller.text;
+                        String city = cityController.text;
+                        String zipcode = zipcodeController.text;
+
+                      // Create a new profile map with the user's input
+                      final profile = {
+                        "Full Name": fullName,
+                        "Address 1": address1,
+                        "Address 2": address2,
+                        "City": city,
+                        "State": selectedItem,
+                        "Zipcode": zipcode,
+                      };
+
+                      try {
+                        // Save the profile data to Firestore
+                        await FirebaseFirestore.instance.collection("Profiles").add(profile);
+
+                        // After saving, navigate to the next screen or perform any other actions
                         Navigator.push(
                           context,
                           MaterialPageRoute(builder: (context) => FuelQuoteForm()),
                         );
+                      } catch (e) {
+                        // Handle any errors that occurred during the save operation
+                        //print("Error saving profile: $e");
+                      }
+
                       } else {
                         // Alert user when form is invalid
                       }

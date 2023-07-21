@@ -9,21 +9,24 @@
             "name": "flutter_application_1",
             "cwd": "flutter_application_1",
             "request": "launch",
-            "type": "dart"
+            "type": "dart",
+            "program": "lib/loginPage.dart"
         },
         {
             "name": "flutter_application_1 (profile mode)",
             "cwd": "flutter_application_1",
             "request": "launch",
             "type": "dart",
-            "flutterMode": "profile"
+            "flutterMode": "profile",
+            "program": "lib/loginPage.dart"
         },
         {
             "name": "flutter_application_1 (release mode)",
             "cwd": "flutter_application_1",
             "request": "launch",
             "type": "dart",
-            "flutterMode": "release"
+            "flutterMode": "release",
+            "program": "lib/loginPage.dart"
         }
     ]
 }

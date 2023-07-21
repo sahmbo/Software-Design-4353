@@ -1,18 +1,21 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/controller/loginPageController.dart';
-import 'package:flutter_application_1/controller/quoteHistoryController.dart';
 import 'package:flutter_application_1/firebase_options.dart';
 import 'package:flutter_application_1/model/loginPageModel.dart';
 import 'package:flutter_application_1/fuelQuote.dart';
 import 'package:flutter_application_1/clientReg.dart';
 import 'dart:async';
+
+import 'navigationPage.dart';
+
+/*
+import 'package:flutter_application_1/controller/quoteHistoryController.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'firebase_options.dart';
-
-// Don't forget to import your other screens at the top
 import 'clientManage.dart';
 import 'quoteHistoryPage.dart';
+*/
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -53,7 +56,7 @@ class _LoginAppState extends State<LoginApp> {
 
       Navigator.of(context).pushReplacement(
         MaterialPageRoute(
-          builder: (context) => const FuelQuoteForm(),
+          builder: (context) => const MyApp(),
         ),
       );
     } else {
@@ -81,57 +84,6 @@ class _LoginAppState extends State<LoginApp> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      /* Temp Nav Bar*/
-      appBar: AppBar(
-        actions: <Widget>[
-          IconButton(
-            icon: Icon(Icons.account_circle),
-            onPressed: () {
-              Navigator.pushReplacement(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => ClientManagementApp(),
-                ),
-              );
-            },
-          ),
-          IconButton(
-            icon: Icon(Icons.local_gas_station),
-            onPressed: () {
-              Navigator.pushReplacement(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => FuelQuoteForm(),
-                ),
-              );
-            },
-          ),
-          IconButton(
-            icon: Icon(Icons.history),
-            onPressed: () {
-              Navigator.pushReplacement(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => MyApp(),
-                ),
-              );
-            },
-          ),
-          IconButton(
-            icon: Icon(Icons.logout),
-            onPressed: () {
-              Navigator.pushReplacement(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => LoginApp(),
-                ),
-              );
-            },
-          ),
-        ],
-      ),
-
-      /* Temp Nav Bar*/
       body: Center(
         child: Padding(
           padding: const EdgeInsets.all(50.0),

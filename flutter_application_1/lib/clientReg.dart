@@ -3,6 +3,7 @@ import 'controller/loginPageController.dart';
 import 'model/loginPageModel.dart';
 import 'loginPage.dart'; // Import the LoginPage
 
+
 class ClientRegistration extends StatefulWidget {
   const ClientRegistration({super.key});
 
