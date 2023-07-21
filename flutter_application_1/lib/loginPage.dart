@@ -81,57 +81,6 @@ class _LoginAppState extends State<LoginApp> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      /* Temp Nav Bar*/
-      appBar: AppBar(
-        actions: <Widget>[
-          IconButton(
-            icon: Icon(Icons.account_circle),
-            onPressed: () {
-              Navigator.pushReplacement(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => ClientManagementApp(),
-                ),
-              );
-            },
-          ),
-          IconButton(
-            icon: Icon(Icons.local_gas_station),
-            onPressed: () {
-              Navigator.pushReplacement(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => FuelQuoteForm(),
-                ),
-              );
-            },
-          ),
-          IconButton(
-            icon: Icon(Icons.history),
-            onPressed: () {
-              Navigator.pushReplacement(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => MyApp(),
-                ),
-              );
-            },
-          ),
-          IconButton(
-            icon: Icon(Icons.logout),
-            onPressed: () {
-              Navigator.pushReplacement(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => LoginApp(),
-                ),
-              );
-            },
-          ),
-        ],
-      ),
-
-      /* Temp Nav Bar*/
       body: Center(
         child: Padding(
           padding: const EdgeInsets.all(50.0),

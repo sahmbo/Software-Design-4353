@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_application_1/controller/clientManageController.dart';
-import 'package:flutter_application_1/fuelQuote.dart';
+import 'controller/clientManageController.dart';
+import 'quoteHistoryPage.dart';
+import 'clientManage.dart';
+import 'fuelQuote.dart';
+import 'loginPage.dart';
 
 void main() {
   runApp(const ClientManagementApp());
@@ -112,9 +115,58 @@ class _ClientManagementState extends State<ClientManagement> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      //nav bar
       appBar: AppBar(
         title: const Text('Client Profile'),
+        actions: <Widget>[
+          IconButton(
+            icon: Icon(Icons.account_circle),
+            onPressed: () {
+              Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => ClientManagementApp(),
+                ),
+              );
+            },
+          ),
+          IconButton(
+            icon: Icon(Icons.local_gas_station),
+            onPressed: () {
+              Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => FuelQuoteForm(),
+                ),
+              );
+            },
+          ),
+          IconButton(
+            icon: Icon(Icons.history),
+            onPressed: () {
+              Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => MyApp(),
+                ),
+              );
+            },
+          ),
+          IconButton(
+            icon: Icon(Icons.logout),
+            onPressed: () {
+              Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => LoginApp(),
+                ),
+              );
+            },
+          ),
+        ],
       ),
+      //end nav bar
+
       body: Center(
         child: Padding(
           padding: const EdgeInsets.all(50.0),
