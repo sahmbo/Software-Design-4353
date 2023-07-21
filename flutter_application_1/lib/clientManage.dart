@@ -186,6 +186,7 @@ class _ClientManagementState extends State<ClientManagement> {
                       border: OutlineInputBorder(),
                       labelText: 'Full Name',
                       counterText: '',
+                      contentPadding: EdgeInsets.symmetric(horizontal: 20, vertical: 12), // Adjust the padding
                     ),
                     validator: (value) {
                       if (value == null || value.isEmpty) {
@@ -206,6 +207,7 @@ class _ClientManagementState extends State<ClientManagement> {
                       border: OutlineInputBorder(),
                       labelText: 'Address 1',
                       counterText: '',
+                      contentPadding: EdgeInsets.symmetric(horizontal: 20, vertical: 12), // Adjust the padding
                     ),
                     validator: (value) {
                       if (value == null || value.isEmpty) {
@@ -226,6 +228,7 @@ class _ClientManagementState extends State<ClientManagement> {
                       border: OutlineInputBorder(),
                       labelText: 'Address 2',
                       counterText: '',
+                      contentPadding: EdgeInsets.symmetric(horizontal: 20, vertical: 12), // Adjust the padding
                     ),
                   ),
 
@@ -240,6 +243,7 @@ class _ClientManagementState extends State<ClientManagement> {
                       border: OutlineInputBorder(),
                       labelText: 'City',
                       counterText: '',
+                      contentPadding: EdgeInsets.symmetric(horizontal: 20, vertical: 12), // Adjust the padding
                     ),
                     validator: (value) {
                       if (value == null || value.isEmpty) {
@@ -251,22 +255,24 @@ class _ClientManagementState extends State<ClientManagement> {
 
                   const SizedBox(height: 10),
 
-                  DropdownButton<String>(
-                    value: selectedItem,
-                    onChanged: (String? newValue) {
-                      setState(() {
-                        selectedItem = newValue;
-                        profileController.saveState(newValue ?? '');
-                      });
-                    },
-                    items: items.map((String value) {
-                      return DropdownMenuItem<String>(
-                        value: value,
-                        child: Text(value),
-                      );
-                    }).toList(),
-                  ),
-
+                  
+                    DropdownButton<String>(
+                      value: selectedItem,
+                      onChanged: (String? newValue) {
+                        setState(() {
+                          selectedItem = newValue;
+                          profileController.saveState(newValue ?? '');
+                        });
+                      },
+                      isExpanded: true,
+                      items: items.map((String value) {
+                        return DropdownMenuItem<String>(
+                          value: value,
+                          child: Text(value),
+                        );
+                      }).toList(),
+                    ),
+                  
                   const SizedBox(height: 10),
 
                   // Zipcode Field
@@ -278,6 +284,7 @@ class _ClientManagementState extends State<ClientManagement> {
                       border: OutlineInputBorder(),
                       labelText: 'Zipcode',
                       counterText: '',
+                      contentPadding: EdgeInsets.symmetric(horizontal: 20, vertical: 12), // Adjust the padding
                     ),
                     validator: (value) {
                       if (value == null || value.isEmpty) {
