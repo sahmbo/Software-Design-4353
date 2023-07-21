@@ -4,6 +4,7 @@ import 'package:flutter_application_1/fuelQuote.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_application_1/quoteHistoryPage.dart';
 
+import 'AppAuth.dart';
 import 'loginPage.dart';
 //import 'package:firebase_core/firebase_core.dart';
 
@@ -315,9 +316,11 @@ class _ClientManagementState extends State<ClientManagement> {
                         String address2 = address2Controller.text;
                         String city = cityController.text;
                         String zipcode = zipcodeController.text;
+                        String? username = AppAuth.instance.userName;
 
                       // Create a new profile map with the user's input
                       final profile = {
+                        "Username": username,
                         "Full Name": fullName,
                         "Address 1": address1,
                         "Address 2": address2,
