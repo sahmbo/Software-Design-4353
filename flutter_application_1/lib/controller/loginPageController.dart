@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:flutter_application_1/AppAuth.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../model/loginPageModel.dart';
 import 'dart:convert';
@@ -17,6 +18,7 @@ class UserController {
         user.copyWith(password: digest.toString()); // Hashed password
     try {
       await users.doc(hashedUser.username).set(hashedUser.toJson());
+      AppAuth.instance.userName = user.username;
       return true;
     } catch (e) {
       print(e);
@@ -35,6 +37,7 @@ class UserController {
         User user = User.fromJson(data);
 
         if (user.password == digest.toString()) {
+          AppAuth.instance.userName = user.username;
           return user;
         }
       }
