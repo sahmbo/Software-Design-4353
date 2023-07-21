@@ -7,6 +7,8 @@ import 'package:flutter_application_1/fuelQuote.dart';
 import 'package:flutter_application_1/clientReg.dart';
 import 'dart:async';
 
+import 'navigationPage.dart';
+
 /*
 import 'package:flutter_application_1/controller/quoteHistoryController.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -54,7 +56,7 @@ class _LoginAppState extends State<LoginApp> {
 
       Navigator.of(context).pushReplacement(
         MaterialPageRoute(
-          builder: (context) => const FuelQuoteForm(),
+          builder: (context) => const MyApp(),
         ),
       );
     } else {
