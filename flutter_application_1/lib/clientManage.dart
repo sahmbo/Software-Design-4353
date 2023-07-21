@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/controller/clientManageController.dart';
 import 'package:flutter_application_1/fuelQuote.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+//import 'package:firebase_core/firebase_core.dart';
 
 void main() {
   runApp(const ClientManagementApp());
@@ -92,7 +94,7 @@ class _ClientManagementState extends State<ClientManagement> {
   final TextEditingController address2Controller = TextEditingController();
   final TextEditingController cityController = TextEditingController();
   final TextEditingController zipcodeController = TextEditingController();
-
+  
   @override
   void initState() {
     super.initState();
@@ -241,19 +243,49 @@ class _ClientManagementState extends State<ClientManagement> {
                   const SizedBox(height: 10),
 
                   ElevatedButton(
-                    onPressed: () {
+                    onPressed: () async {
                       if (_formKey.currentState!.validate()) {
                         // Do something when form is valid
-                        profileController.saveFullName(fullNameController.text);
-                        profileController.saveAddress_1(address1Controller.text);
-                        profileController.saveAddress_2(address2Controller.text);
-                        profileController.saveCity(cityController.text);
-                        profileController.saveZipcode(zipcodeController.text);
+                        // profileController.saveFullName(fullNameController.text);
+                        // profileController.saveAddress_1(address1Controller.text);
+                        // profileController.saveAddress_2(address2Controller.text);
+                        // profileController.saveCity(cityController.text);
+                        // profileController.saveZipcode(zipcodeController.text);
                         //print(profileController.clientManage);
+                        // Navigator.push(
+                        //   context,
+                        //   MaterialPageRoute(builder: (context) => FuelQuoteForm()),
+                        // );
+                        String fullName = fullNameController.text;
+                        String address1 = address1Controller.text;
+                        String address2 = address2Controller.text;
+                        String city = cityController.text;
+                        String zipcode = zipcodeController.text;
+
+                      // Create a new profile map with the user's input
+                      final profile = {
+                        "Full Name": fullName,
+                        "Address 1": address1,
+                        "Address 2": address2,
+                        "City": city,
+                        "State": selectedItem,
+                        "Zipcode": zipcode,
+                      };
+
+                      try {
+                        // Save the profile data to Firestore
+                        await FirebaseFirestore.instance.collection("Profiles").add(profile);
+
+                        // After saving, navigate to the next screen or perform any other actions
                         Navigator.push(
                           context,
                           MaterialPageRoute(builder: (context) => FuelQuoteForm()),
                         );
+                      } catch (e) {
+                        // Handle any errors that occurred during the save operation
+                        //print("Error saving profile: $e");
+                      }
+
                       } else {
                         // Alert user when form is invalid
                       }
