@@ -1,18 +1,19 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/controller/loginPageController.dart';
-import 'package:flutter_application_1/controller/quoteHistoryController.dart';
 import 'package:flutter_application_1/firebase_options.dart';
 import 'package:flutter_application_1/model/loginPageModel.dart';
 import 'package:flutter_application_1/fuelQuote.dart';
 import 'package:flutter_application_1/clientReg.dart';
 import 'dart:async';
+
+/*
+import 'package:flutter_application_1/controller/quoteHistoryController.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'firebase_options.dart';
-
-// Don't forget to import your other screens at the top
 import 'clientManage.dart';
 import 'quoteHistoryPage.dart';
+*/
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
