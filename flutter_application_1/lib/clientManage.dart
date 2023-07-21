@@ -96,7 +96,7 @@ class _ClientManagementState extends State<ClientManagement> {
   final TextEditingController address2Controller = TextEditingController();
   final TextEditingController cityController = TextEditingController();
   final TextEditingController zipcodeController = TextEditingController();
-  
+
   @override
   void initState() {
     super.initState();
@@ -148,7 +148,7 @@ class _ClientManagementState extends State<ClientManagement> {
               Navigator.pushReplacement(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => MyApp(),
+                  builder: (context) => QuoteHistoryPage(),
                 ),
               );
             },
@@ -192,7 +192,6 @@ class _ClientManagementState extends State<ClientManagement> {
                       }
                       return null;
                     },
-                    
                   ),
 
                   const SizedBox(height: 10),
@@ -213,7 +212,6 @@ class _ClientManagementState extends State<ClientManagement> {
                       }
                       return null;
                     },
-                    
                   ),
 
                   const SizedBox(height: 10),
@@ -228,7 +226,6 @@ class _ClientManagementState extends State<ClientManagement> {
                       labelText: 'Address 2',
                       counterText: '',
                     ),
-      
                   ),
 
                   const SizedBox(height: 10),
@@ -249,7 +246,6 @@ class _ClientManagementState extends State<ClientManagement> {
                       }
                       return null;
                     },
-                    
                   ),
 
                   const SizedBox(height: 10),
@@ -288,7 +284,6 @@ class _ClientManagementState extends State<ClientManagement> {
                       }
                       return null;
                     },
-                    
                   ),
 
                   const SizedBox(height: 10),
@@ -313,30 +308,32 @@ class _ClientManagementState extends State<ClientManagement> {
                         String city = cityController.text;
                         String zipcode = zipcodeController.text;
 
-                      // Create a new profile map with the user's input
-                      final profile = {
-                        "Full Name": fullName,
-                        "Address 1": address1,
-                        "Address 2": address2,
-                        "City": city,
-                        "State": selectedItem,
-                        "Zipcode": zipcode,
-                      };
+                        // Create a new profile map with the user's input
+                        final profile = {
+                          "Full Name": fullName,
+                          "Address 1": address1,
+                          "Address 2": address2,
+                          "City": city,
+                          "State": selectedItem,
+                          "Zipcode": zipcode,
+                        };
 
-                      try {
-                        // Save the profile data to Firestore
-                        await FirebaseFirestore.instance.collection("Profiles").add(profile);
+                        try {
+                          // Save the profile data to Firestore
+                          await FirebaseFirestore.instance
+                              .collection("Profiles")
+                              .add(profile);
 
-                        // After saving, navigate to the next screen or perform any other actions
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(builder: (context) => FuelQuoteForm()),
-                        );
-                      } catch (e) {
-                        // Handle any errors that occurred during the save operation
-                        //print("Error saving profile: $e");
-                      }
-
+                          // After saving, navigate to the next screen or perform any other actions
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => FuelQuoteForm()),
+                          );
+                        } catch (e) {
+                          // Handle any errors that occurred during the save operation
+                          //print("Error saving profile: $e");
+                        }
                       } else {
                         // Alert user when form is invalid
                       }

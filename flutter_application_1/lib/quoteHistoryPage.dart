@@ -1,29 +1,48 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/controller/quoteHistoryController.dart';
+import 'package:flutter_application_1/model/quoteHistoryModel.dart';
 import 'package:intl/intl.dart';
 import 'package:flutter_application_1/quoteHistoryPage.dart';
 import 'package:flutter_application_1/clientManage.dart';
 import 'package:flutter_application_1/fuelQuote.dart';
 import 'package:flutter_application_1/loginPage.dart';
+import 'AppAuth.dart';
 
 void main() {
-  runApp(const MyApp());
+  runApp(const QuoteHistoryPage());
 }
 
-class MyApp extends StatefulWidget {
-  const MyApp({super.key});
+class QuoteHistoryPage extends StatefulWidget {
+  const QuoteHistoryPage({super.key});
 
   @override
   _DataTable createState() => _DataTable();
 }
 
-class _DataTable extends State<MyApp> {
+class _DataTable extends State<QuoteHistoryPage> {
   final QuoteHistoryController _quoteHistoryController =
       QuoteHistoryController();
+
+  List<QuoteHistoryModel> _quoteHistory = [];
+  final String? userName = AppAuth.instance.userName;
+
+  void loadData() async {
+    final quoteHistory = await _quoteHistoryController.GetQuoteHistoryModels(
+        userName);
+    setState(() {
+      _quoteHistory = quoteHistory;
+    });
+  }
+
+    @override
+  void dispose() {
+    super.dispose();
+  }
 
   final DateFormat dateFormat = DateFormat('yyyy-MM-dd');
   @override
   Widget build(BuildContext context) {
+    loadData();
     return MaterialApp(
       home: Scaffold(
           //nav bar
@@ -58,7 +77,7 @@ class _DataTable extends State<MyApp> {
                   Navigator.pushReplacement(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => MyApp(),
+                      builder: (context) => QuoteHistoryPage(),
                     ),
                   );
                 },
@@ -101,7 +120,7 @@ class _DataTable extends State<MyApp> {
                         style: TextStyle(
                             fontSize: 15, fontWeight: FontWeight.bold))),
               ],
-              rows: _quoteHistoryController.quoteHistory.quoteHistoryItems
+              rows: _quoteHistory
                   .map(
                     (p) => DataRow(cells: [
                       DataCell(

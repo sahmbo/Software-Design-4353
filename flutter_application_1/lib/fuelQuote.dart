@@ -4,7 +4,6 @@ import 'controller/fuelQuoteController.dart';
 import 'quoteHistoryPage.dart';
 import 'clientManage.dart';
 
-
 void main() {
   runApp(MaterialApp(
     home: const FuelQuoteForm(),
@@ -26,7 +25,8 @@ class _FuelQuoteFormState extends State<FuelQuoteForm> {
 
   final TextEditingController _gallonsController = TextEditingController();
   final TextEditingController _deliveryDateController = TextEditingController();
-  final String _deliveryAddress = '123 Main Street'; // Replace with the actual client profile data
+  final String _deliveryAddress =
+      '123 Main Street'; // Replace with the actual client profile data
 
   bool _isSignOutHovered = false;
   bool _isCalculateHovered = false;
@@ -91,7 +91,7 @@ class _FuelQuoteFormState extends State<FuelQuoteForm> {
               Navigator.pushReplacement(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => MyApp(),
+                  builder: (context) => QuoteHistoryPage(),
                 ),
               );
             },
@@ -110,8 +110,6 @@ class _FuelQuoteFormState extends State<FuelQuoteForm> {
         ],
       ),
       //end nav bar
-
-
 
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -251,7 +249,8 @@ class _FuelQuoteFormState extends State<FuelQuoteForm> {
                   style: ElevatedButton.styleFrom(
                     foregroundColor: _isCalculateHovered
                         ? Colors.white
-                        : const Color.fromRGBO(15, 76, 92, 1.0), backgroundColor: _isCalculateHovered
+                        : const Color.fromRGBO(15, 76, 92, 1.0),
+                    backgroundColor: _isCalculateHovered
                         ? const Color.fromRGBO(255, 163, 165, 1.0)
                         : const Color.fromRGBO(255, 163, 165, 1.0),
                   ),

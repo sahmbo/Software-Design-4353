@@ -1,12 +1,8 @@
 // model/quoteHistoryModel.dart
 
-class QuoteHistory {
-  final List<QuoteHistoryItem> quoteHistoryItems = [];
+import 'package:cloud_firestore/cloud_firestore.dart';
 
-  QuoteHistory();
-}
-
-class QuoteHistoryItem {
+class QuoteHistoryModel {
   final String userName;
   final double gallonsRequested;
   final String deliveryAddress;
@@ -19,24 +15,24 @@ class QuoteHistoryItem {
       'username': userName,
       'gallons_requested': gallonsRequested,
       'delivery_address': deliveryAddress,
-      'delivery_date': deliveryDate,
+      'delivery_date': Timestamp.fromDate(deliveryDate),
       'suggested_price_per_gallon': suggestedPricePerGallon,
       'total_amount_due': totalAmountDue,
     };
   }
 
-  QuoteHistoryItem.fromJson(Map<String, Object?> json)
+  QuoteHistoryModel.fromJson(Map<String, Object?> json)
       : this(
           userName: json['username']! as String,
           gallonsRequested: json['gallons_requested']! as double,
           deliveryAddress: json['delivery_address']! as String,
-          deliveryDate: json['delivery_date']! as DateTime,
+          deliveryDate: (json['delivery_date']! as Timestamp).toDate(),
           suggestedPricePerGallon:
               json['suggested_price_per_gallon']! as double,
           totalAmountDue: json['total_amount_due']! as double,
         );
 
-  QuoteHistoryItem(
+  QuoteHistoryModel(
       {required this.userName,
       required this.gallonsRequested,
       required this.deliveryAddress,
