@@ -331,7 +331,7 @@ class _ClientManagementState extends State<ClientManagement> {
 
                       try {
                         // Save the profile data to Firestore
-                        await FirebaseFirestore.instance.collection("Profiles").add(profile);
+                        await FirebaseFirestore.instance.collection("Profiles").doc(username).set(profile);
 
                         // After saving, navigate to the next screen or perform any other actions
                         Navigator.push(
