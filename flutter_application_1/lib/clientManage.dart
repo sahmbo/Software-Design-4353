@@ -6,6 +6,7 @@ import 'package:flutter_application_1/quoteHistoryPage.dart';
 import 'AppAuth.dart';
 import 'controller/fuelQuoteController.dart';
 import 'loginPage.dart';
+import 'profile_repo.dart';
 //import 'package:firebase_core/firebase_core.dart';
 
 void main() {
@@ -90,6 +91,8 @@ class _ClientManagementState extends State<ClientManagement> {
     'WI',
     'WY'
   ];
+
+  final ProfileRepository profileRepository = ProfileRepository(); // Create an instance
 
   String? selectedItem;
   final _formKey = GlobalKey<FormState>();
@@ -318,6 +321,8 @@ class _ClientManagementState extends State<ClientManagement> {
                         "Zipcode": zipcode,
                       };
                       try {
+                        // Save the profile data using the ProfileRepository instance
+                        //await profileRepository.saveProfileData(widget.testCollectionPath, username, profile);
                         // Save the profile data to Firestore
                         await FirebaseFirestore.instance.collection("Profiles").doc(username).set(profile);
                          // Create a new fuel quote map with the user's input and the delivery address
