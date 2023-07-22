@@ -30,15 +30,12 @@ void main() {
     // Provide a non-null delivery address
     const String nonNullDeliveryAddress = '123 Main Street';
 
-    // Build our widget and trigger a frame.
     await tester.pumpWidget(MaterialApp(
       home: FuelQuoteForm(deliveryAddress: nonNullDeliveryAddress),
     ));
 
-    // Find the TextFormField that displays the delivery address.
     final deliveryAddressField = find.byKey(ValueKey('deliveryAddress'));
 
-    // Extract the value of the delivery address field.
     final deliveryAddressValue = (tester.widget(deliveryAddressField) as TextFormField).controller?.text;
 
     // Verify that the delivery address is not null.
