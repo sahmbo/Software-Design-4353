@@ -23,9 +23,23 @@ Future<void> main() async {
     options: DefaultFirebaseOptions.currentPlatform,
   );
   runApp(
-    const MaterialApp(
+    MaterialApp(
       title: 'My App',
-      home: LoginApp(),
+      theme: ThemeData(
+        primaryColor: Colors.teal[300],
+        inputDecorationTheme: InputDecorationTheme(
+          labelStyle: TextStyle(color: Colors.blueGrey[300]),
+          focusedBorder: OutlineInputBorder(
+            borderSide: BorderSide(color: Colors.teal[300]!, width: 2.0),
+            borderRadius: BorderRadius.circular(10.0),
+          ),
+          focusColor: Colors.teal[300],
+        ),
+        textSelectionTheme: TextSelectionThemeData(
+          cursorColor: Colors.black,
+        ),
+      ),
+      home: const LoginApp(),
     ),
   );
 }
