@@ -34,8 +34,13 @@ class HomePage extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: <Widget>[
             _buildButton(context, 'Manage', Icons.people, ClientManagement()),
-            _buildButton(context, 'Fuel Quote', Icons.local_gas_station,
-                FuelQuoteForm(deliveryAddress: '',)), //********* remind to change if it does not update! */
+            _buildButton(
+                context,
+                'Fuel Quote',
+                Icons.local_gas_station,
+                FuelQuoteForm(
+                  deliveryAddress: '',
+                )), //********* remind to change if it does not update! */
             _buildButton(
                 context, 'Quote History', Icons.history, QuoteHistoryPage()),
             _buildButton(context, 'Logout', Icons.logout, LoginApp()),
@@ -47,24 +52,29 @@ class HomePage extends StatelessWidget {
 
   Widget _buildButton(
       BuildContext context, String title, IconData icon, Widget page) {
-    return ElevatedButton(
-      onPressed: () {
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => page,
-          ),
-        );
-      },
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: <Widget>[
-          Icon(icon, size: 24), // Icon
-          Text(title), // Text
-        ],
-      ),
-      style: ElevatedButton.styleFrom(
-        primary: Colors.teal[100],
+    return Container(
+      height: 150, // Set the height of the button
+      width: 150, // Set the width of the button
+      child: ElevatedButton(
+        onPressed: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => page,
+            ),
+          );
+        },
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: <Widget>[
+            Icon(icon,
+                size: 50), // You can adjust this value to resize your icon
+            Text(title),
+          ],
+        ),
+        style: ElevatedButton.styleFrom(
+          primary: Colors.teal[300],
+        ),
       ),
     );
   }

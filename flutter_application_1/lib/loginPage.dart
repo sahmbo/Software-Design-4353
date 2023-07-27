@@ -84,42 +84,23 @@ class _LoginAppState extends State<LoginApp> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Center(
-        child: Padding(
-          padding: const EdgeInsets.all(50.0),
+      appBar: AppBar(
+        title: Text('Login'),
+        backgroundColor: Colors.teal[200],
+      ),
+      body: SingleChildScrollView(
+        child: Container(
+          padding: EdgeInsets.all(20.0),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
+              SizedBox(height: 50.0), // add some space at the top
+              Icon(Icons.account_circle,
+                  size: 100.0,
+                  color: Colors.blueGrey[100]), // user icon at the top
+              SizedBox(height: 50.0), // add some space below the icon
               Container(
-                padding: const EdgeInsets.all(10.0),
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(10.0),
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.grey.withOpacity(0.5),
-                      spreadRadius: 5,
-                      blurRadius: 7,
-                      offset: const Offset(0, 3),
-                    ),
-                  ],
-                  gradient: LinearGradient(
-                    colors: [Colors.blue[200]!, Colors.blue[100]!],
-                    begin: Alignment.topCenter,
-                    end: Alignment.bottomCenter,
-                  ),
-                ),
-                child: const Text(
-                  'Login',
-                  style: TextStyle(
-                    fontSize: 24,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.black,
-                  ),
-                ),
-              ),
-              const SizedBox(height: 20),
-              Container(
-                width: 500,
+                width: MediaQuery.of(context).size.width * 0.9,
                 child: TextField(
                   key: ValueKey('UsernameField'),
                   controller: _usernameController,
@@ -133,9 +114,12 @@ class _LoginAppState extends State<LoginApp> {
                   ),
                 ),
               ),
-              const SizedBox(height: 20),
+
+              SizedBox(height: 20.0), // add some space between textfields
+
+// Here starts the Container with the Password TextField
               Container(
-                width: 500,
+                width: MediaQuery.of(context).size.width * 0.9,
                 child: TextField(
                   key: ValueKey('PasswordField'),
                   controller: _passwordController,
@@ -150,48 +134,55 @@ class _LoginAppState extends State<LoginApp> {
                   ),
                 ),
               ),
-              const SizedBox(height: 20),
+
+              SizedBox(height: 20.0), // add some space below the password field
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  ElevatedButton(
-                    key: ValueKey('LoginButton'),
-                    onPressed: handleLogin,
-                    child: const Text('Login'),
-                    style: ElevatedButton.styleFrom(
-                      primary: Colors.blue,
-                      onPrimary: Colors.white,
-                      padding:
-                          EdgeInsets.symmetric(horizontal: 50, vertical: 10),
-                      textStyle:
-                          TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                  Container(
+                    margin: EdgeInsets.only(right: 10.0),
+                    child: ElevatedButton(
+                      key: ValueKey('LoginButton'),
+                      onPressed: handleLogin,
+                      child: Text('Login'),
+                      style: ElevatedButton.styleFrom(
+                        primary: Colors.teal[300],
+                        onPrimary: Colors.white,
+                        padding:
+                            EdgeInsets.symmetric(horizontal: 50, vertical: 10),
+                        textStyle: TextStyle(
+                            fontSize: 18, fontWeight: FontWeight.bold),
+                      ),
                     ),
                   ),
-                  const SizedBox(width: 10),
-                  ElevatedButton(
-                    onPressed: () {
-                      Navigator.of(context).push(
-                        MaterialPageRoute(
-                          builder: (context) => const ClientRegistration(),
-                        ),
-                      );
-                    },
-                    child: const Text('Create an Account'),
-                    style: ElevatedButton.styleFrom(
-                      primary: Colors.blue,
-                      onPrimary: Colors.white,
-                      padding:
-                          EdgeInsets.symmetric(horizontal: 50, vertical: 10),
-                      textStyle:
-                          TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                  Container(
+                    margin: EdgeInsets.only(left: 10.0),
+                    child: ElevatedButton(
+                      onPressed: () {
+                        Navigator.of(context).push(
+                          MaterialPageRoute(
+                            builder: (context) => ClientRegistration(),
+                          ),
+                        );
+                      },
+                      child: Text('Create an Account'),
+                      style: ElevatedButton.styleFrom(
+                        primary: Colors.teal[300],
+                        onPrimary: Colors.white,
+                        padding:
+                            EdgeInsets.symmetric(horizontal: 50, vertical: 10),
+                        textStyle: TextStyle(
+                            fontSize: 18, fontWeight: FontWeight.bold),
+                      ),
                     ),
                   ),
                 ],
               ),
-              const SizedBox(height: 20),
+
+              SizedBox(height: 20.0), // add some space below the buttons
               Text(
                 errorMessage,
-                style: const TextStyle(
+                style: TextStyle(
                   color: Colors.red,
                 ),
               ),
