@@ -7,7 +7,6 @@ import 'AppAuth.dart';
 import 'controller/fuelQuoteController.dart';
 import 'loginPage.dart';
 import 'profile_repo.dart';
-//import 'package:firebase_core/firebase_core.dart';
 
 void main() {
   runApp(const ClientManagementApp());
@@ -125,6 +124,7 @@ class _ClientManagementState extends State<ClientManagement> {
       //nav bar
       appBar: AppBar(
         title: const Text('Client Profile'),
+        backgroundColor: Colors.lightGreen, // Set the background color to light green
         actions: <Widget>[
           IconButton(
             icon: Icon(Icons.account_circle),
@@ -174,9 +174,10 @@ class _ClientManagementState extends State<ClientManagement> {
       ),
       //end nav bar
 
-      body: Center(
+    body: SingleChildScrollView( // Scroll
+      child: Center(
         child: Padding(
-          padding: const EdgeInsets.all(50.0),
+          padding: const EdgeInsets.all(35.0),
           child: Form(
             key: _formKey,
             child: Column(
@@ -297,18 +298,13 @@ class _ClientManagementState extends State<ClientManagement> {
                         profileController.saveAddress_2(address2Controller.text);
                         profileController.saveCity(cityController.text);
                         profileController.saveZipcode(zipcodeController.text);
-                        //print(profileController.clientManage);
-                        // Navigator.push(
-                        //   context,
-                        //   MaterialPageRoute(builder: (context) => FuelQuoteForm()),
-                        // );
+
                         String fullName = fullNameController.text;
                         String address1 = address1Controller.text;
                         String address2 = address2Controller.text;
                         String city = cityController.text;
                         String zipcode = zipcodeController.text;
                         String? username = AppAuth.instance.userName;
-
 
                       // Create a new profile map with the user's input
                       final profile = {
@@ -321,8 +317,6 @@ class _ClientManagementState extends State<ClientManagement> {
                         "Zipcode": zipcode,
                       };
                       try {
-                        // Save the profile data using the ProfileRepository instance
-                        //await profileRepository.saveProfileData(widget.testCollectionPath, username, profile);
                         // Save the profile data to Firestore
                         await FirebaseFirestore.instance.collection("Profiles").doc(username).set(profile);
                          // Create a new fuel quote map with the user's input and the delivery address
@@ -347,15 +341,20 @@ class _ClientManagementState extends State<ClientManagement> {
                         );
                       } catch (e) {
                         // Handle any errors that occurred during the save operation
-                        //print("Error saving profile: $e");
                       }
                       } else {
-                        // Alert user when form is invalid
+                        // When form is invalid
                       }
                     },
                     child: const Text('Complete'),
+                      style: ElevatedButton.styleFrom(
+                      primary: Colors.lightGreen, // Change the button color to light green
+                      onPrimary: Colors.white, // Change the text color to white
+                      padding: EdgeInsets.symmetric(horizontal: 20, vertical: 12), // Adjust the padding
+                    ),
                   ),
                 ]),
+            ),
           ),
         ),
       ),
