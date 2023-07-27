@@ -126,49 +126,61 @@ class _ClientManagementState extends State<ClientManagement> {
         title: const Text('Client Profile'),
         backgroundColor: Colors.lightGreen, // Set the background color to light green
         actions: <Widget>[
-          IconButton(
-            icon: Icon(Icons.account_circle),
-            onPressed: () {
-              Navigator.pushReplacement(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => ClientManagementApp(),
-                ),
-              );
-            },
+          Tooltip(
+              message: 'Profile', //Tooltip text for the account icon
+              child: IconButton(
+                icon: Icon(Icons.account_circle),
+                onPressed: () {
+                  Navigator.pushReplacement(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => ClientManagementApp(),
+                    ),
+                  );
+                },
+              ),
           ),
-          IconButton(
-            icon: Icon(Icons.local_gas_station),
-            onPressed: () {
-              Navigator.pushReplacement(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => FuelQuoteForm(deliveryAddress: '',),
-                ),
-              );
-            },
+          Tooltip(
+            message: 'Fuel Quote',
+            child: IconButton(
+              icon: Icon(Icons.local_gas_station),
+              onPressed: () {
+                Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => FuelQuoteForm(deliveryAddress: '',),
+                  ),
+                );
+              },
+            ),
           ),
-          IconButton(
-            icon: Icon(Icons.history),
-            onPressed: () {
-              Navigator.pushReplacement(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => QuoteHistoryPage(),
-                ),
-              );
-            },
+          Tooltip(
+            message: 'History',
+            child: IconButton(
+              icon: Icon(Icons.history),
+              onPressed: () {
+                Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => QuoteHistoryPage(),
+                  ),
+                );
+              },
+            ),
           ),
-          IconButton(
-            icon: Icon(Icons.logout),
-            onPressed: () {
-              Navigator.pushReplacement(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => LoginApp(),
-                ),
-              );
-            },
+          Tooltip(
+            message: 'Logout',
+            child: IconButton(
+              icon: Icon(Icons.logout),
+              onPressed: () {
+                Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => LoginApp(),
+                  ),
+                );
+              },
+            ),
           ),
         ],
       ),
