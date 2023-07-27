@@ -67,7 +67,9 @@ class _FuelQuoteFormState extends State<FuelQuoteForm> {
       appBar: AppBar(
         title: const Text('Fuel Quote Form'),
         actions: <Widget>[
-          IconButton(
+        Tooltip(
+          message: 'Profile',
+          child: IconButton(
             icon: Icon(Icons.account_circle),
             onPressed: () {
               Navigator.pushReplacement(
@@ -78,7 +80,10 @@ class _FuelQuoteFormState extends State<FuelQuoteForm> {
               );
             },
           ),
-          IconButton(
+        ),
+        Tooltip(
+          message: 'Fuel Quote',
+          child: IconButton(
             icon: Icon(Icons.local_gas_station),
             onPressed: () {
               Navigator.pushReplacement(
@@ -89,7 +94,10 @@ class _FuelQuoteFormState extends State<FuelQuoteForm> {
               );
             },
           ),
-          IconButton(
+        ),
+        Tooltip(
+          message: 'History',
+          child: IconButton(
             icon: Icon(Icons.history),
             onPressed: () {
               Navigator.pushReplacement(
@@ -100,7 +108,10 @@ class _FuelQuoteFormState extends State<FuelQuoteForm> {
               );
             },
           ),
-          IconButton(
+        ),
+        Tooltip(
+          message: 'Logout',
+          child: IconButton(
             icon: Icon(Icons.logout),
             onPressed: () {
               Navigator.pushReplacement(
@@ -111,6 +122,7 @@ class _FuelQuoteFormState extends State<FuelQuoteForm> {
               );
             },
           ),
+        ),
         ],
       ),
       //end nav bar

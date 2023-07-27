@@ -49,7 +49,9 @@ class _DataTable extends State<QuoteHistoryPage> {
           appBar: AppBar(
             title: const Text('Quote History'),
             actions: <Widget>[
-              IconButton(
+            Tooltip(
+              message: 'Profile',
+              child: IconButton(
                 icon: Icon(Icons.account_circle),
                 onPressed: () {
                   Navigator.pushReplacement(
@@ -60,7 +62,10 @@ class _DataTable extends State<QuoteHistoryPage> {
                   );
                 },
               ),
-              IconButton(
+            ),
+            Tooltip(
+              message: 'Fuel Quote',
+              child: IconButton(
                 icon: Icon(Icons.local_gas_station),
                 onPressed: () {
                   Navigator.pushReplacement(
@@ -71,7 +76,10 @@ class _DataTable extends State<QuoteHistoryPage> {
                   );
                 },
               ),
-              IconButton(
+            ),
+            Tooltip(
+              message: 'History',
+              child: IconButton(
                 icon: Icon(Icons.history),
                 onPressed: () {
                   Navigator.pushReplacement(
@@ -82,7 +90,10 @@ class _DataTable extends State<QuoteHistoryPage> {
                   );
                 },
               ),
-              IconButton(
+            ),
+            Tooltip(
+              message: 'Logout',
+              child: IconButton(
                 icon: Icon(Icons.logout),
                 onPressed: () {
                   Navigator.pushReplacement(
@@ -93,6 +104,7 @@ class _DataTable extends State<QuoteHistoryPage> {
                   );
                 },
               ),
+            ),
             ],
           ),
           //end nav bar
