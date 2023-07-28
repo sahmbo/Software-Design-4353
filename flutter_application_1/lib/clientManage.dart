@@ -2,13 +2,16 @@
 import 'package:flutter_application_1/controller/clientManageController.dart';
 import 'package:flutter_application_1/fuelQuote.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter_application_1/quoteHistoryPage.dart';
 import 'AppAuth.dart';
 import 'controller/fuelQuoteController.dart';
 import 'loginPage.dart';
 import 'profile_repo.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
   runApp(const ClientManagementApp());
 }
 
@@ -102,10 +105,40 @@ class _ClientManagementState extends State<ClientManagement> {
   final TextEditingController cityController = TextEditingController();
   final TextEditingController zipcodeController = TextEditingController();
 
+  Future<Map<String, dynamic>?> fetchUserProfileData(String? username) async {
+    try {
+      final DocumentSnapshot<Map<String, dynamic>> snapshot =
+          await FirebaseFirestore.instance.collection("Profiles").doc(username).get();
+      if (snapshot.exists) {
+        return snapshot.data();
+      }
+    } catch (e) {
+      //print("Error fetching user profile data: $e");
+    }
+    return null;
+  }
+
   @override
   void initState() {
     super.initState();
     selectedItem = 'AL';
+    loadUserProfileData(); // Call this function to fetch and display the user's profile data.
+  }
+
+  Future<void> loadUserProfileData() async {
+    String? username = AppAuth.instance.userName;
+    final userProfileData = await fetchUserProfileData(username);
+
+    if (userProfileData != null) {
+      setState(() {
+        fullNameController.text = userProfileData["Full Name"] ?? '';
+        address1Controller.text = userProfileData["Address 1"] ?? '';
+        address2Controller.text = userProfileData["Address 2"] ?? '';
+        cityController.text = userProfileData["City"] ?? '';
+        zipcodeController.text = userProfileData["Zipcode"] ?? '';
+        selectedItem = userProfileData["State"] ?? 'AL';
+      });
+    }
   }
 
   @override
