@@ -3,21 +3,24 @@ import 'loginPage.dart';
 import 'controller/fuelQuoteController.dart';
 import 'quoteHistoryPage.dart';
 import 'clientManage.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 void main() {
   runApp(MaterialApp(
-    home: const FuelQuoteForm(),
+    home: const FuelQuoteForm(deliveryAddress: '',),
     theme: ThemeData(
         scaffoldBackgroundColor: const Color.fromRGBO(255, 201, 173, 0.5)),
   ));
 }
 
 class FuelQuoteForm extends StatefulWidget {
-  const FuelQuoteForm({super.key});
+  final String deliveryAddress; // Add a parameter to receive the delivery address
+  const FuelQuoteForm({required this.deliveryAddress, Key? key}) : super(key: key); // remind to change!!!!!!
 
   @override
   _FuelQuoteFormState createState() => _FuelQuoteFormState();
 }
+
 
 class _FuelQuoteFormState extends State<FuelQuoteForm> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
@@ -25,17 +28,24 @@ class _FuelQuoteFormState extends State<FuelQuoteForm> {
 
   final TextEditingController _gallonsController = TextEditingController();
   final TextEditingController _deliveryDateController = TextEditingController();
-  final String _deliveryAddress =
-      '123 Main Street'; // Replace with the actual client profile data
+  //final String _deliveryAddress = '123 Main Street'; // Replace with the actual client profile data
+
 
   bool _isSignOutHovered = false;
   bool _isCalculateHovered = false;
 
-  void signOut() {
-    Navigator.pushReplacement(
-      context,
-      MaterialPageRoute(builder: (context) => const LoginApp()),
-    );
+  Future<void> _handleLogout() async {
+    try {
+      await FirebaseAuth.instance.signOut();
+
+      Navigator.pushAndRemoveUntil(
+        context,
+        MaterialPageRoute(builder: (context) => LoginApp()),
+        (route) => false, // Remove all routes from the stack
+      );
+    } catch (e) {
+      //print("");
+    }
   }
 
   @override
@@ -50,9 +60,11 @@ class _FuelQuoteFormState extends State<FuelQuoteForm> {
     _fuelQuoteController.updateGallonsRequested(gallons);
     _fuelQuoteController.calculateTotalAmountDue();
 
+
     print('Gallons: ${_fuelQuoteController.fuelQuote.gallonsRequested}');
     print('Total amount due: ${_fuelQuoteController.fuelQuote.totalAmountDue}');
   }
+
 
   @override
   Widget build(BuildContext context) {
@@ -63,7 +75,9 @@ class _FuelQuoteFormState extends State<FuelQuoteForm> {
       appBar: AppBar(
         title: const Text('Fuel Quote Form'),
         actions: <Widget>[
-          IconButton(
+        Tooltip(
+          message: 'Profile',
+          child: IconButton(
             icon: Icon(Icons.account_circle),
             onPressed: () {
               Navigator.pushReplacement(
@@ -74,18 +88,24 @@ class _FuelQuoteFormState extends State<FuelQuoteForm> {
               );
             },
           ),
-          IconButton(
+        ),
+        Tooltip(
+          message: 'Fuel Quote',
+          child: IconButton(
             icon: Icon(Icons.local_gas_station),
             onPressed: () {
               Navigator.pushReplacement(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => FuelQuoteForm(),
+                  builder: (context) => FuelQuoteForm(deliveryAddress: '',),
                 ),
               );
             },
           ),
-          IconButton(
+        ),
+        Tooltip(
+          message: 'History',
+          child: IconButton(
             icon: Icon(Icons.history),
             onPressed: () {
               Navigator.pushReplacement(
@@ -96,17 +116,14 @@ class _FuelQuoteFormState extends State<FuelQuoteForm> {
               );
             },
           ),
-          IconButton(
+        ),
+        Tooltip(
+          message: 'Logout',
+          child: IconButton(
             icon: Icon(Icons.logout),
-            onPressed: () {
-              Navigator.pushReplacement(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => LoginApp(),
-                ),
-              );
-            },
+            onPressed: _handleLogout,
           ),
+        ),
         ],
       ),
       //end nav bar
@@ -208,7 +225,7 @@ class _FuelQuoteFormState extends State<FuelQuoteForm> {
                 ),
               ),
               TextFormField(
-                initialValue: _deliveryAddress,
+                initialValue: widget.deliveryAddress, // Use the provided delivery address here
                 enabled: false,
                 decoration: const InputDecoration(
                   labelText: 'Delivery Address',

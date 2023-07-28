@@ -7,6 +7,7 @@ import 'package:flutter_application_1/clientManage.dart';
 import 'package:flutter_application_1/fuelQuote.dart';
 import 'package:flutter_application_1/loginPage.dart';
 import 'AppAuth.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 void main() {
   runApp(const QuoteHistoryPage());
@@ -34,6 +35,24 @@ class _DataTable extends State<QuoteHistoryPage> {
     });
   }
 
+  // Function to handle logout and navigate to login page
+  Future<void> _handleLogout() async {
+    try {
+      // Sign out the current user using Firebase Authentication
+      await FirebaseAuth.instance.signOut();
+
+      // Navigate to the login page
+      Navigator.pushAndRemoveUntil(
+        context,
+        MaterialPageRoute(builder: (context) => LoginApp()),
+        (route) => false, // Remove all routes from the stack
+      );
+    } catch (e) {
+      // Handle any errors that occur during sign-out
+      //print("");
+    }
+  }
+
     @override
   void dispose() {
     super.dispose();
@@ -49,7 +68,9 @@ class _DataTable extends State<QuoteHistoryPage> {
           appBar: AppBar(
             title: const Text('Quote History'),
             actions: <Widget>[
-              IconButton(
+            Tooltip(
+              message: 'Profile',
+              child: IconButton(
                 icon: Icon(Icons.account_circle),
                 onPressed: () {
                   Navigator.pushReplacement(
@@ -60,18 +81,24 @@ class _DataTable extends State<QuoteHistoryPage> {
                   );
                 },
               ),
-              IconButton(
+            ),
+            Tooltip(
+              message: 'Fuel Quote',
+              child: IconButton(
                 icon: Icon(Icons.local_gas_station),
                 onPressed: () {
                   Navigator.pushReplacement(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => FuelQuoteForm(),
+                      builder: (context) => FuelQuoteForm(deliveryAddress: '',), //remind to change in case!!!
                     ),
                   );
                 },
               ),
-              IconButton(
+            ),
+            Tooltip(
+              message: 'History',
+              child: IconButton(
                 icon: Icon(Icons.history),
                 onPressed: () {
                   Navigator.pushReplacement(
@@ -82,17 +109,14 @@ class _DataTable extends State<QuoteHistoryPage> {
                   );
                 },
               ),
-              IconButton(
+            ),
+            Tooltip(
+              message: 'Logout',
+              child: IconButton(
                 icon: Icon(Icons.logout),
-                onPressed: () {
-                  Navigator.pushReplacement(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => LoginApp(),
-                    ),
-                  );
-                },
+                onPressed: _handleLogout,
               ),
+            ),
             ],
           ),
           //end nav bar
