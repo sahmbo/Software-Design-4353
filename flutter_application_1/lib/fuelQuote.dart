@@ -3,6 +3,7 @@ import 'loginPage.dart';
 import 'controller/fuelQuoteController.dart';
 import 'quoteHistoryPage.dart';
 import 'clientManage.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 void main() {
   runApp(MaterialApp(
@@ -33,11 +34,18 @@ class _FuelQuoteFormState extends State<FuelQuoteForm> {
   bool _isSignOutHovered = false;
   bool _isCalculateHovered = false;
 
-  void signOut() {
-    Navigator.pushReplacement(
-      context,
-      MaterialPageRoute(builder: (context) => const LoginApp()),
-    );
+  Future<void> _handleLogout() async {
+    try {
+      await FirebaseAuth.instance.signOut();
+
+      Navigator.pushAndRemoveUntil(
+        context,
+        MaterialPageRoute(builder: (context) => LoginApp()),
+        (route) => false, // Remove all routes from the stack
+      );
+    } catch (e) {
+      //print("");
+    }
   }
 
   @override
@@ -113,14 +121,7 @@ class _FuelQuoteFormState extends State<FuelQuoteForm> {
           message: 'Logout',
           child: IconButton(
             icon: Icon(Icons.logout),
-            onPressed: () {
-              Navigator.pushReplacement(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => LoginApp(),
-                ),
-              );
-            },
+            onPressed: _handleLogout,
           ),
         ),
         ],

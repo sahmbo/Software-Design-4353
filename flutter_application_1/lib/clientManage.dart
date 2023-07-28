@@ -148,10 +148,10 @@ class _ClientManagementState extends State<ClientManagement> {
       // Sign out the current user using Firebase Authentication
       await FirebaseAuth.instance.signOut();
 
-      // Navigate to the login page and remove all routes from the stack
+      // Navigate to the login page
       Navigator.pushAndRemoveUntil(
         context,
-        MaterialPageRoute(builder: (context) => LoginApp()), // Replace LoginPage with your actual login page widget
+        MaterialPageRoute(builder: (context) => LoginApp()),
         (route) => false, // Remove all routes from the stack
       );
     } catch (e) {
