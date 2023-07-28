@@ -3,6 +3,7 @@ import 'package:flutter_application_1/controller/clientManageController.dart';
 import 'package:flutter_application_1/fuelQuote.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_application_1/quoteHistoryPage.dart';
 import 'AppAuth.dart';
 import 'controller/fuelQuoteController.dart';
@@ -113,7 +114,7 @@ class _ClientManagementState extends State<ClientManagement> {
         return snapshot.data();
       }
     } catch (e) {
-      //print("Error fetching user profile data: $e");
+      //print("");
     }
     return null;
   }
@@ -138,6 +139,24 @@ class _ClientManagementState extends State<ClientManagement> {
         zipcodeController.text = userProfileData["Zipcode"] ?? '';
         selectedItem = userProfileData["State"] ?? 'AL';
       });
+    }
+  }
+
+  // Function to handle logout and navigate to login page
+  Future<void> _handleLogout() async {
+    try {
+      // Sign out the current user using Firebase Authentication
+      await FirebaseAuth.instance.signOut();
+
+      // Navigate to the login page and remove all routes from the stack
+      Navigator.pushAndRemoveUntil(
+        context,
+        MaterialPageRoute(builder: (context) => LoginApp()), // Replace LoginPage with your actual login page widget
+        (route) => false, // Remove all routes from the stack
+      );
+    } catch (e) {
+      // Handle any errors that occur during sign-out
+      //print("");
     }
   }
 
@@ -205,14 +224,7 @@ class _ClientManagementState extends State<ClientManagement> {
             message: 'Logout',
             child: IconButton(
               icon: Icon(Icons.logout),
-              onPressed: () {
-                Navigator.pushReplacement(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => LoginApp(),
-                  ),
-                );
-              },
+              onPressed: _handleLogout, // The logout function here
             ),
           ),
         ],
