@@ -28,8 +28,8 @@ class _DataTable extends State<QuoteHistoryPage> {
   final String? userName = AppAuth.instance.userName;
 
   void loadData() async {
-    final quoteHistory = await _quoteHistoryController.GetQuoteHistoryModels(
-        userName);
+    final quoteHistory =
+        await _quoteHistoryController.GetQuoteHistoryModels(userName);
     setState(() {
       _quoteHistory = quoteHistory;
     });
@@ -53,7 +53,7 @@ class _DataTable extends State<QuoteHistoryPage> {
     }
   }
 
-    @override
+  @override
   void dispose() {
     super.dispose();
   }
@@ -66,57 +66,64 @@ class _DataTable extends State<QuoteHistoryPage> {
       home: Scaffold(
           //nav bar
           appBar: AppBar(
+            leading: BackButton(
+              onPressed: () {
+                Navigator.pop(context);
+              },
+            ),
             title: const Text('Quote History'),
             actions: <Widget>[
-            Tooltip(
-              message: 'Profile',
-              child: IconButton(
-                icon: Icon(Icons.account_circle),
-                onPressed: () {
-                  Navigator.pushReplacement(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => ClientManagementApp(),
-                    ),
-                  );
-                },
+              Tooltip(
+                message: 'Profile',
+                child: IconButton(
+                  icon: Icon(Icons.account_circle),
+                  onPressed: () {
+                    Navigator.pushReplacement(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => ClientManagementApp(),
+                      ),
+                    );
+                  },
+                ),
               ),
-            ),
-            Tooltip(
-              message: 'Fuel Quote',
-              child: IconButton(
-                icon: Icon(Icons.local_gas_station),
-                onPressed: () {
-                  Navigator.pushReplacement(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => FuelQuoteForm(deliveryAddress: '',), //remind to change in case!!!
-                    ),
-                  );
-                },
+              Tooltip(
+                message: 'Fuel Quote',
+                child: IconButton(
+                  icon: Icon(Icons.local_gas_station),
+                  onPressed: () {
+                    Navigator.pushReplacement(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => FuelQuoteForm(
+                          deliveryAddress: '',
+                        ), //remind to change in case!!!
+                      ),
+                    );
+                  },
+                ),
               ),
-            ),
-            Tooltip(
-              message: 'History',
-              child: IconButton(
-                icon: Icon(Icons.history),
-                onPressed: () {
-                  Navigator.pushReplacement(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => QuoteHistoryPage(),
-                    ),
-                  );
-                },
+              Tooltip(
+                message: 'History',
+                child: IconButton(
+                  icon: Icon(Icons.history),
+                  onPressed: () {
+                    Navigator.pushReplacement(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => QuoteHistoryPage(),
+                      ),
+                    );
+                  },
+                ),
               ),
-            ),
-            Tooltip(
-              message: 'Logout',
-              child: IconButton(
-                icon: Icon(Icons.logout),
-                onPressed: _handleLogout,
+              Tooltip(
+                message: 'Logout',
+                child: IconButton(
+                  icon: Icon(Icons.logout),
+                  onPressed: _handleLogout,
+                ),
               ),
-            ),
             ],
           ),
           //end nav bar

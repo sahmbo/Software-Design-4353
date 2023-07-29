@@ -99,6 +99,7 @@ class _LoginAppState extends State<LoginApp> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        automaticallyImplyLeading: false,
         title: Text('Login'),
         backgroundColor: Colors.teal[200],
       ),
