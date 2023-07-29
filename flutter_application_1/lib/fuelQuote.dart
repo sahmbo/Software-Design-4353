@@ -232,6 +232,13 @@ class _FuelQuoteFormState extends State<FuelQuoteForm> {
                 ),
               ),
               TextFormField(
+                //initialValue: widget.State, // Use the provided delivery address here
+                enabled: false,
+                decoration: const InputDecoration(
+                  labelText: 'State',
+                ),
+              ),
+              TextFormField(
                 initialValue: suggestedPrice.toString(),
                 enabled: false,
                 decoration: const InputDecoration(
