@@ -279,7 +279,7 @@ class _FuelQuoteFormState extends State<FuelQuoteForm> {
                         : const Color.fromRGBO(255, 163, 165, 1.0),
                   ),
                   child: Text(
-                    'Calculate',
+                    'Get Quote',
                     style: TextStyle(
                       color: _isCalculateHovered ? Colors.white : Colors.black,
                     ),
