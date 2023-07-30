@@ -1,4 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/controller/clientManageController.dart';
 import 'package:flutter_application_1/fuelQuote.dart';
@@ -10,7 +11,9 @@ import 'controller/fuelQuoteController.dart';
 import 'loginPage.dart';
 import 'profile_repo.dart';
 
-void main() {
+void main() async {
+   WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
   runApp(const ClientManagementApp());
 }
 
@@ -104,10 +107,40 @@ class _ClientManagementState extends State<ClientManagement> {
   final TextEditingController cityController = TextEditingController();
   final TextEditingController zipcodeController = TextEditingController();
 
+  Future<Map<String, dynamic>?> fetchUserProfileData(String? username) async {
+    try {
+      final DocumentSnapshot<Map<String, dynamic>> snapshot =
+          await FirebaseFirestore.instance.collection("Profiles").doc(username).get();
+      if (snapshot.exists) {
+        return snapshot.data();
+      }
+    } catch (e) {
+      //print("");
+    }
+    return null;
+  }
+
   @override
   void initState() {
     super.initState();
     selectedItem = 'AL';
+    loadUserProfileData(); //call this function to fetch and display the users' profile data.
+  }
+
+  Future<void> loadUserProfileData() async {
+    String? username = AppAuth.instance.userName;
+    final userProfileData = await fetchUserProfileData(username);
+
+    if (userProfileData != null) {
+      setState(() {
+        fullNameController.text = userProfileData["Full Name"] ?? '';
+        address1Controller.text = userProfileData["Address 1"] ?? '';
+        address2Controller.text = userProfileData["Address 2"] ?? '';
+        cityController.text = userProfileData["City"] ?? '';
+        zipcodeController.text = userProfileData["Zipcode"] ?? '';
+        selectedItem = userProfileData["State"] ?? 'AL';
+      });
+    }
   }
 
   // Function to handle logout and navigate to login page
