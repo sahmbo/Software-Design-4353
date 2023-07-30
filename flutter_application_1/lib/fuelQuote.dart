@@ -19,6 +19,7 @@ class FuelQuoteForm extends StatefulWidget {
 
   @override
   _FuelQuoteFormState createState() => _FuelQuoteFormState();
+  
 }
 
 
@@ -33,6 +34,7 @@ class _FuelQuoteFormState extends State<FuelQuoteForm> {
 
   bool _isSignOutHovered = false;
   bool _isCalculateHovered = false;
+  bool _isSubmitHovered = false;
 
   Future<void> _handleLogout() async {
     try {
@@ -240,12 +242,12 @@ class _FuelQuoteFormState extends State<FuelQuoteForm> {
                 child: MouseRegion(
                   onEnter: (_) {
                     setState(() {
-                      _isCalculateHovered = true;
+                      _isSubmitHovered = true;
                     });
                   },
                   onExit: (_) {
                     setState(() {
-                      _isCalculateHovered = false;
+                      _isSubmitHovered = false;
                     });
                   },
                   child: ElevatedButton(
@@ -256,7 +258,7 @@ class _FuelQuoteFormState extends State<FuelQuoteForm> {
                       }
                     },
                     style: ElevatedButton.styleFrom(
-                      primary: _isCalculateHovered
+                      primary: _isSubmitHovered
                         ? const Color.fromRGBO(255, 163, 165, 1.0)
                         : const Color.fromRGBO(15, 76, 92, 1.0),
                       onPrimary: Colors.white,
@@ -266,7 +268,7 @@ class _FuelQuoteFormState extends State<FuelQuoteForm> {
                     child: Text(
                       'Submit',
                       style: TextStyle(
-                        color: _isCalculateHovered ? Colors.white : Colors.black,
+                        color: _isSubmitHovered ? Colors.white : Colors.black,
                       ),
                     ),
                   ),
