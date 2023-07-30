@@ -1,3 +1,5 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'loginPage.dart';
 import 'controller/fuelQuoteController.dart';
@@ -5,7 +7,9 @@ import 'quoteHistoryPage.dart';
 import 'clientManage.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
-void main() {
+void main() async{
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
   runApp(MaterialApp(
     home: const FuelQuoteForm(deliveryAddress: '',),
     theme: ThemeData(
@@ -67,12 +71,39 @@ class _FuelQuoteFormState extends State<FuelQuoteForm> {
     print('Total amount due: ${_fuelQuoteController.fuelQuote.totalAmountDue}');
   }
 
+  void _submitForm() {
+  if (_formKey.currentState?.validate() ?? false) {
+    // Get the form values
+    double gallons = double.tryParse(_gallonsController.text) ?? 0.0;
+    String deliveryDate = _deliveryDateController.text;
+    String deliveryAddress = widget.deliveryAddress;
+    String state = ''; // Replace with the actual state value
+
+    // Create a map to store the data
+    Map<String, dynamic> formData = {
+      'gallonsRequested': gallons,
+      'deliveryDate': deliveryDate,
+      'deliveryAddress': deliveryAddress,
+      'state': state,
+    };
+
+    // Get a reference to the Firestore collection
+    CollectionReference formCollection =
+        FirebaseFirestore.instance.collection('submitForm');
+
+    // Add the document to the collection
+    formCollection
+        .add(formData)
+        .then((value) => print('Form data added to Firestore'))
+        .catchError((error) => print('Error adding form data: $error'));
+  }
+}
 
   @override
   Widget build(BuildContext context) {
     var suggestedPrice = 0;
     var totalAmountDue = 0;
-    var _submitForm;
+    //var _submitForm;
     return Scaffold(
       //nav bar
       appBar: AppBar(
@@ -251,12 +282,12 @@ class _FuelQuoteFormState extends State<FuelQuoteForm> {
                     });
                   },
                   child: ElevatedButton(
-                    onPressed: () {
+                    onPressed: _submitForm, /*{
                       if (_formKey.currentState?.validate() ?? false) {
                         calculateTotalAmountDue();
                         setState(() {});
                       }
-                    },
+                    },*/
                     style: ElevatedButton.styleFrom(
                       primary: _isSubmitHovered
                         ? const Color.fromRGBO(77, 182, 172, 1)
