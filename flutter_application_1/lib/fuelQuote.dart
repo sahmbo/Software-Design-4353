@@ -220,8 +220,8 @@ class _FuelQuoteFormState extends State<FuelQuoteForm> {
                     },
                     style: ElevatedButton.styleFrom(
                       primary: _isCalculateHovered
-                        ? const Color.fromRGBO(255, 163, 165, 1.0)
-                        : const Color.fromRGBO(15, 76, 92, 1.0),
+                        ? const Color.fromRGBO(77, 182, 172, 1)
+                        : const Color.fromRGBO(77, 182, 172, 1),
                       onPrimary: Colors.white,
                       padding: EdgeInsets.symmetric(horizontal: 50, vertical: 10),
                       textStyle: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
@@ -259,8 +259,8 @@ class _FuelQuoteFormState extends State<FuelQuoteForm> {
                     },
                     style: ElevatedButton.styleFrom(
                       primary: _isSubmitHovered
-                        ? const Color.fromRGBO(255, 163, 165, 1.0)
-                        : const Color.fromRGBO(15, 76, 92, 1.0),
+                        ? const Color.fromRGBO(77, 182, 172, 1)
+                        : const Color.fromRGBO(77, 182, 172, 1),
                       onPrimary: Colors.white,
                       padding: EdgeInsets.symmetric(horizontal: 50, vertical: 10),
                       textStyle: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
