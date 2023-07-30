@@ -70,6 +70,7 @@ class _FuelQuoteFormState extends State<FuelQuoteForm> {
   Widget build(BuildContext context) {
     var suggestedPrice = 0;
     var totalAmountDue = 0;
+    var _submitForm;
     return Scaffold(
       //nav bar
       appBar: AppBar(
@@ -134,67 +135,7 @@ class _FuelQuoteFormState extends State<FuelQuoteForm> {
           key: _formKey,
           child: ListView(
             children: [
-              // Container(
-              //   padding: const EdgeInsets.all(10.0),
-              //   decoration: BoxDecoration(
-              //     borderRadius: BorderRadius.circular(10.0),
-              //     boxShadow: [
-              //       BoxShadow(
-              //         color: Colors.grey.withOpacity(0.45),
-              //         spreadRadius: 5,
-              //         blurRadius: 7,
-              //         offset: const Offset(0, 3),
-              //       ),
-              //     ],
-              //     gradient: const LinearGradient(
-              //       colors: [Color(0xFF9EBC9F), Color(0xFF9EBC9F)],
-              //       begin: Alignment.topCenter,
-              //       end: Alignment.bottomCenter,
-              //     ),
-              //   ),
-              //   child: Row(
-              //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              //     children: [
-              //       Text(
-              //         'Fuel Quote Form',
-              //         style: TextStyle(
-              //           fontSize: 24,
-              //           fontWeight: FontWeight.bold,
-              //           color: Colors.white.withOpacity(1),
-              //         ),
-              //       ),
-              //       MouseRegion(
-              //         onEnter: (_) {
-              //           setState(() {
-              //             _isSignOutHovered = true;
-              //           });
-              //         },
-              //         onExit: (_) {
-              //           setState(() {
-              //             _isSignOutHovered = false;
-              //           });
-              //         },
-              //         child: ElevatedButton(
-              //           onPressed: signOut,
-              //           style: ElevatedButton.styleFrom(
-              //             foregroundColor: _isSignOutHovered
-              //                 ? Colors.white
-              //                 : const Color.fromRGBO(15, 76, 92, 1.0), backgroundColor: _isSignOutHovered
-              //                 ? const Color.fromRGBO(255, 163, 165, 1.0)
-              //                 : const Color.fromRGBO(255, 163, 165, 1.0),
-              //           ),
-              //           child: Text(
-              //             'Sign Out',
-              //             style: TextStyle(
-              //               color:
-              //                   _isSignOutHovered ? Colors.white : Colors.black,
-              //             ),
-              //           ),
-              //         ),
-              //       ),
-              //     ],
-              //   ),
-              // ),
+          
               TextFormField(
                 controller: _gallonsController,
                 keyboardType: TextInputType.number,
@@ -252,42 +193,88 @@ class _FuelQuoteFormState extends State<FuelQuoteForm> {
                   labelText: 'Total Amount Due',
                 ),
               ),
-              MouseRegion(
-                onEnter: (_) {
-                  setState(() {
-                    _isCalculateHovered = true;
-                  });
-                },
-                onExit: (_) {
-                  setState(() {
-                    _isCalculateHovered = false;
-                  });
-                },
-                child: ElevatedButton(
-                  onPressed: () {
-                    if (_formKey.currentState?.validate() ?? false) {
-                      calculateTotalAmountDue();
-                      setState(() {});
-                    }
+              
+              SizedBox(height: 20.0),
+              
+              SizedBox(
+                height: 50, // Set a fixed height for the SizedBox
+                child: MouseRegion(
+                  onEnter: (_) {
+                    setState(() {
+                      _isCalculateHovered = true;
+                    });
                   },
-                  style: ElevatedButton.styleFrom(
-                    foregroundColor: _isCalculateHovered
-                        ? Colors.white
-                        : const Color.fromRGBO(15, 76, 92, 1.0),
-                    backgroundColor: _isCalculateHovered
+                  onExit: (_) {
+                    setState(() {
+                      _isCalculateHovered = false;
+                    });
+                  },
+                  child: ElevatedButton(
+                    onPressed: () {
+                      if (_formKey.currentState?.validate() ?? false) {
+                        calculateTotalAmountDue();
+                        setState(() {});
+                      }
+                    },
+                    style: ElevatedButton.styleFrom(
+                      primary: _isCalculateHovered
                         ? const Color.fromRGBO(255, 163, 165, 1.0)
-                        : const Color.fromRGBO(255, 163, 165, 1.0),
+                        : const Color.fromRGBO(15, 76, 92, 1.0),
+                      onPrimary: Colors.white,
+                      padding: EdgeInsets.symmetric(horizontal: 50, vertical: 10),
+                      textStyle: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                    ),
+                    child: Text(
+                      'Get Quote',
+                      style: TextStyle(
+                        color: _isCalculateHovered ? Colors.white : Colors.black,
+                      ),
+                    ),
                   ),
-                  child: Text(
-                    'Get Quote',
-                    style: TextStyle(
-                      color: _isCalculateHovered ? Colors.white : Colors.black,
+                ),
+              ),
+
+              SizedBox(height: 20.0),
+              SizedBox(
+                height: 50, // Set a fixed height for the SizedBox
+                child: MouseRegion(
+                  onEnter: (_) {
+                    setState(() {
+                      _isCalculateHovered = true;
+                    });
+                  },
+                  onExit: (_) {
+                    setState(() {
+                      _isCalculateHovered = false;
+                    });
+                  },
+                  child: ElevatedButton(
+                    onPressed: () {
+                      if (_formKey.currentState?.validate() ?? false) {
+                        calculateTotalAmountDue();
+                        setState(() {});
+                      }
+                    },
+                    style: ElevatedButton.styleFrom(
+                      primary: _isCalculateHovered
+                        ? const Color.fromRGBO(255, 163, 165, 1.0)
+                        : const Color.fromRGBO(15, 76, 92, 1.0),
+                      onPrimary: Colors.white,
+                      padding: EdgeInsets.symmetric(horizontal: 50, vertical: 10),
+                      textStyle: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                    ),
+                    child: Text(
+                      'Submit',
+                      style: TextStyle(
+                        color: _isCalculateHovered ? Colors.white : Colors.black,
+                      ),
                     ),
                   ),
                 ),
               ),
             ],
           ),
+          
         ),
       ),
     );
