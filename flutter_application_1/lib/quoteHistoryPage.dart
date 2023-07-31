@@ -72,6 +72,7 @@ class _DataTable extends State<QuoteHistoryPage> {
               },
             ),
             title: const Text('Quote History'),
+            backgroundColor: Colors.teal[200],
             actions: <Widget>[
               Tooltip(
                 message: 'Profile',
@@ -96,7 +97,11 @@ class _DataTable extends State<QuoteHistoryPage> {
                       context,
                       MaterialPageRoute(
                         builder: (context) => FuelQuoteForm(
-                          deliveryAddress: '', address2: '', city: '', state: '', zipcode: '',
+                          deliveryAddress: '',
+                          address2: '',
+                          city: '',
+                          state: '',
+                          zipcode: '',
                         ), //remind to change in case!!!
                       ),
                     );

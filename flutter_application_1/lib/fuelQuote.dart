@@ -21,7 +21,7 @@ void main() async {
       zipcode: '',
     ),
     theme: ThemeData(
-        scaffoldBackgroundColor: const Color.fromRGBO(255, 201, 173, 0.5)),
+        scaffoldBackgroundColor: const Color.fromRGBO(77, 182, 172, 1)),
   ));
 }
 
@@ -53,9 +53,12 @@ class _FuelQuoteFormState extends State<FuelQuoteForm> {
       QuoteHistoryController();
   final TextEditingController _gallonsController = TextEditingController();
   final TextEditingController _deliveryDateController = TextEditingController();
-  final TextEditingController _deliveryAddressController = TextEditingController();
-  final TextEditingController _suggestedPriceController = TextEditingController();
-  final TextEditingController _totalAmountDueController = TextEditingController();
+  final TextEditingController _deliveryAddressController =
+      TextEditingController();
+  final TextEditingController _suggestedPriceController =
+      TextEditingController();
+  final TextEditingController _totalAmountDueController =
+      TextEditingController();
   final TextEditingController _stateController = TextEditingController();
   //final String _deliveryAddress = '123 Main Street'; // Replace with the actual client profile data
 
@@ -124,10 +127,17 @@ class _FuelQuoteFormState extends State<FuelQuoteForm> {
   void calculateTotalAmountDue() async {
     double gallons = double.tryParse(_gallonsController.text) ?? 0.0;
     double locationFactor = state == "TX" ? 0.02 : 0.04;
-    double rateHistoryFactor = await _quoteHistoryController.UserHasHistory(AppAuth.instance.userName) ? 0.01 : 0.0;
+    double rateHistoryFactor =
+        await _quoteHistoryController.UserHasHistory(AppAuth.instance.userName)
+            ? 0.01
+            : 0.0;
     double gallonsRequestedFactor = gallons > 1000 ? 0.02 : 0.03;
     double companyProfitFactor = 0.1;
-    double margin = 1.5 * (locationFactor - rateHistoryFactor + gallonsRequestedFactor + companyProfitFactor);
+    double margin = 1.5 *
+        (locationFactor -
+            rateHistoryFactor +
+            gallonsRequestedFactor +
+            companyProfitFactor);
     suggestedPrice = 1.5 + margin;
     totalAmountDue = gallons * suggestedPrice!;
     _suggestedPriceController.text = "${suggestedPrice!.toStringAsFixed(3)}";
@@ -175,6 +185,7 @@ class _FuelQuoteFormState extends State<FuelQuoteForm> {
       //nav bar
       appBar: AppBar(
         title: const Text('Fuel Quote Form'),
+        backgroundColor: Colors.teal[200],
         actions: <Widget>[
           Tooltip(
             message: 'Profile',
@@ -326,7 +337,7 @@ class _FuelQuoteFormState extends State<FuelQuoteForm> {
                       'Get Quote',
                       style: TextStyle(
                         color:
-                            _isCalculateHovered ? Colors.white : Colors.black,
+                            _isCalculateHovered ? Colors.white : Colors.white,
                       ),
                     ),
                   ),
@@ -348,12 +359,6 @@ class _FuelQuoteFormState extends State<FuelQuoteForm> {
                   },
                   child: ElevatedButton(
                     onPressed: _submitForm,
-                    /*{
-                      if (_formKey.currentState?.validate() ?? false) {
-                        calculateTotalAmountDue();
-                        setState(() {});
-                      }
-                    },*/
                     style: ElevatedButton.styleFrom(
                       primary: _isSubmitHovered
                           ? const Color.fromRGBO(77, 182, 172, 1)
@@ -367,7 +372,7 @@ class _FuelQuoteFormState extends State<FuelQuoteForm> {
                     child: Text(
                       'Submit',
                       style: TextStyle(
-                        color: _isSubmitHovered ? Colors.white : Colors.black,
+                        color: _isSubmitHovered ? Colors.white : Colors.white,
                       ),
                     ),
                   ),

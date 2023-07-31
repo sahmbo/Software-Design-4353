@@ -28,6 +28,7 @@ class HomePage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Homepage'),
+        backgroundColor: Colors.teal[200],
       ),
       body: Center(
         child: Row(
@@ -39,7 +40,11 @@ class HomePage extends StatelessWidget {
                 'Fuel Quote',
                 Icons.local_gas_station,
                 FuelQuoteForm(
-                  deliveryAddress: '', address2: '', city: '', state: '', zipcode: '',
+                  deliveryAddress: '',
+                  address2: '',
+                  city: '',
+                  state: '',
+                  zipcode: '',
                 )), //********* remind to change if it does not update! */
             _buildButton(
                 context, 'Quote History', Icons.history, QuoteHistoryPage()),
