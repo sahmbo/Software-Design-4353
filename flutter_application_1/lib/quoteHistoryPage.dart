@@ -96,7 +96,7 @@ class _DataTable extends State<QuoteHistoryPage> {
                       context,
                       MaterialPageRoute(
                         builder: (context) => FuelQuoteForm(
-                          deliveryAddress: '',
+                          deliveryAddress: '', address2: '', city: '', state: '', zipcode: '',
                         ), //remind to change in case!!!
                       ),
                     );

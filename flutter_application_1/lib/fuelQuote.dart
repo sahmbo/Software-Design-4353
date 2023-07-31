@@ -7,7 +7,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 
 void main() {
   runApp(MaterialApp(
-    home: const FuelQuoteForm(deliveryAddress: '',),
+    home: const FuelQuoteForm(deliveryAddress: '', address2: '', city: '', state: '', zipcode: '',),
     theme: ThemeData(
         scaffoldBackgroundColor: const Color.fromRGBO(255, 201, 173, 0.5)),
   ));
@@ -15,7 +15,15 @@ void main() {
 
 class FuelQuoteForm extends StatefulWidget {
   final String deliveryAddress; // Add a parameter to receive the delivery address
-  const FuelQuoteForm({required this.deliveryAddress, Key? key}) : super(key: key); // remind to change!!!!!!
+  final String address2;
+  final String city;
+  final String state;
+  final String zipcode;
+
+  const FuelQuoteForm({required this.deliveryAddress,  required this.address2,
+    required this.city,
+    required this.state,
+    required this.zipcode, Key? key}) : super(key: key); // remind to change!!!!!!
 
   @override
   _FuelQuoteFormState createState() => _FuelQuoteFormState();
@@ -65,6 +73,11 @@ class _FuelQuoteFormState extends State<FuelQuoteForm> {
     print('Total amount due: ${_fuelQuoteController.fuelQuote.totalAmountDue}');
   }
 
+  String getFormattedDeliveryAddress() {
+    // Concatenate the address components into a single string
+    return "${widget.deliveryAddress}, ${widget.address2}, ${widget.city}, ${widget.state}, ${widget.zipcode}";
+  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -97,7 +110,7 @@ class _FuelQuoteFormState extends State<FuelQuoteForm> {
               Navigator.pushReplacement(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => FuelQuoteForm(deliveryAddress: '',),
+                  builder: (context) => FuelQuoteForm(deliveryAddress: '', address2: '', city: '', state: '', zipcode: '',),
                 ),
               );
             },
@@ -225,7 +238,7 @@ class _FuelQuoteFormState extends State<FuelQuoteForm> {
                 ),
               ),
               TextFormField(
-                initialValue: widget.deliveryAddress, // Use the provided delivery address here
+                initialValue: getFormattedDeliveryAddress(), // Use the provided delivery address here
                 enabled: false,
                 decoration: const InputDecoration(
                   labelText: 'Delivery Address',

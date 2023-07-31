@@ -39,7 +39,7 @@ class HomePage extends StatelessWidget {
                 'Fuel Quote',
                 Icons.local_gas_station,
                 FuelQuoteForm(
-                  deliveryAddress: '',
+                  deliveryAddress: '', address2: '', city: '', state: '', zipcode: '',
                 )), //********* remind to change if it does not update! */
             _buildButton(
                 context, 'Quote History', Icons.history, QuoteHistoryPage()),

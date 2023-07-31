@@ -220,7 +220,7 @@ class _ClientManagementState extends State<ClientManagement> {
                 Navigator.pushReplacement(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => FuelQuoteForm(deliveryAddress: '',),
+                    builder: (context) => FuelQuoteForm(deliveryAddress: '', address2: '', city: '', state: '', zipcode: '',),
                   ),
                 );
               },
@@ -412,7 +412,11 @@ class _ClientManagementState extends State<ClientManagement> {
                           context,
                           MaterialPageRoute(
                             builder: (context) => FuelQuoteForm(
-                              deliveryAddress: address1, // Pass the delivery address obtained from the ClientManagement widget
+                              deliveryAddress: address1, 
+                              address2: address2, 
+                              city: city, 
+                              state: selectedItem ?? '', // Pass the selected state, 
+                              zipcode: zipcode,// Pass the delivery address obtained from the ClientManagement widget
                             ),
                           ),
                         );
