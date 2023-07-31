@@ -1,3 +1,5 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'loginPage.dart';
 import 'controller/fuelQuoteController.dart';
@@ -5,7 +7,9 @@ import 'quoteHistoryPage.dart';
 import 'clientManage.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
-void main() {
+void main() async{
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
   runApp(MaterialApp(
     home: const FuelQuoteForm(deliveryAddress: '', address2: '', city: '', state: '', zipcode: '',),
     theme: ThemeData(
@@ -27,6 +31,7 @@ class FuelQuoteForm extends StatefulWidget {
 
   @override
   _FuelQuoteFormState createState() => _FuelQuoteFormState();
+  
 }
 
 
@@ -41,6 +46,7 @@ class _FuelQuoteFormState extends State<FuelQuoteForm> {
 
   bool _isSignOutHovered = false;
   bool _isCalculateHovered = false;
+  bool _isSubmitHovered = false;
 
   Future<void> _handleLogout() async {
     try {
@@ -78,11 +84,39 @@ class _FuelQuoteFormState extends State<FuelQuoteForm> {
     return "${widget.deliveryAddress}, ${widget.address2}, ${widget.city}, ${widget.state}, ${widget.zipcode}";
   }
 
+  void _submitForm() {
+  if (_formKey.currentState?.validate() ?? false) {
+    // Get the form values
+    double gallons = double.tryParse(_gallonsController.text) ?? 0.0;
+    String deliveryDate = _deliveryDateController.text;
+    String deliveryAddress = widget.deliveryAddress;
+    String state = ''; // Replace with the actual state value
+
+    // Create a map to store the data
+    Map<String, dynamic> formData = {
+      'gallonsRequested': gallons,
+      'deliveryDate': deliveryDate,
+      'deliveryAddress': deliveryAddress,
+      'state': state,
+    };
+
+    // Get a reference to the Firestore collection
+    CollectionReference formCollection =
+        FirebaseFirestore.instance.collection('submitForm');
+
+    // Add the document to the collection
+    formCollection
+        .add(formData)
+        .then((value) => print('Form data added to Firestore'))
+        .catchError((error) => print('Error adding form data: $error'));
+  }
+}
 
   @override
   Widget build(BuildContext context) {
     var suggestedPrice = 0;
     var totalAmountDue = 0;
+    //var _submitForm;
     return Scaffold(
       //nav bar
       appBar: AppBar(
@@ -147,67 +181,7 @@ class _FuelQuoteFormState extends State<FuelQuoteForm> {
           key: _formKey,
           child: ListView(
             children: [
-              // Container(
-              //   padding: const EdgeInsets.all(10.0),
-              //   decoration: BoxDecoration(
-              //     borderRadius: BorderRadius.circular(10.0),
-              //     boxShadow: [
-              //       BoxShadow(
-              //         color: Colors.grey.withOpacity(0.45),
-              //         spreadRadius: 5,
-              //         blurRadius: 7,
-              //         offset: const Offset(0, 3),
-              //       ),
-              //     ],
-              //     gradient: const LinearGradient(
-              //       colors: [Color(0xFF9EBC9F), Color(0xFF9EBC9F)],
-              //       begin: Alignment.topCenter,
-              //       end: Alignment.bottomCenter,
-              //     ),
-              //   ),
-              //   child: Row(
-              //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              //     children: [
-              //       Text(
-              //         'Fuel Quote Form',
-              //         style: TextStyle(
-              //           fontSize: 24,
-              //           fontWeight: FontWeight.bold,
-              //           color: Colors.white.withOpacity(1),
-              //         ),
-              //       ),
-              //       MouseRegion(
-              //         onEnter: (_) {
-              //           setState(() {
-              //             _isSignOutHovered = true;
-              //           });
-              //         },
-              //         onExit: (_) {
-              //           setState(() {
-              //             _isSignOutHovered = false;
-              //           });
-              //         },
-              //         child: ElevatedButton(
-              //           onPressed: signOut,
-              //           style: ElevatedButton.styleFrom(
-              //             foregroundColor: _isSignOutHovered
-              //                 ? Colors.white
-              //                 : const Color.fromRGBO(15, 76, 92, 1.0), backgroundColor: _isSignOutHovered
-              //                 ? const Color.fromRGBO(255, 163, 165, 1.0)
-              //                 : const Color.fromRGBO(255, 163, 165, 1.0),
-              //           ),
-              //           child: Text(
-              //             'Sign Out',
-              //             style: TextStyle(
-              //               color:
-              //                   _isSignOutHovered ? Colors.white : Colors.black,
-              //             ),
-              //           ),
-              //         ),
-              //       ),
-              //     ],
-              //   ),
-              // ),
+          
               TextFormField(
                 controller: _gallonsController,
                 keyboardType: TextInputType.number,
@@ -265,42 +239,88 @@ class _FuelQuoteFormState extends State<FuelQuoteForm> {
                   labelText: 'Total Amount Due',
                 ),
               ),
-              MouseRegion(
-                onEnter: (_) {
-                  setState(() {
-                    _isCalculateHovered = true;
-                  });
-                },
-                onExit: (_) {
-                  setState(() {
-                    _isCalculateHovered = false;
-                  });
-                },
-                child: ElevatedButton(
-                  onPressed: () {
-                    if (_formKey.currentState?.validate() ?? false) {
-                      calculateTotalAmountDue();
-                      setState(() {});
-                    }
+              
+              SizedBox(height: 20.0),
+              
+              SizedBox(
+                height: 50, // Set a fixed height for the SizedBox
+                child: MouseRegion(
+                  onEnter: (_) {
+                    setState(() {
+                      _isCalculateHovered = true;
+                    });
                   },
-                  style: ElevatedButton.styleFrom(
-                    foregroundColor: _isCalculateHovered
-                        ? Colors.white
-                        : const Color.fromRGBO(15, 76, 92, 1.0),
-                    backgroundColor: _isCalculateHovered
-                        ? const Color.fromRGBO(255, 163, 165, 1.0)
-                        : const Color.fromRGBO(255, 163, 165, 1.0),
+                  onExit: (_) {
+                    setState(() {
+                      _isCalculateHovered = false;
+                    });
+                  },
+                  child: ElevatedButton(
+                    onPressed: () {
+                      if (_formKey.currentState?.validate() ?? false) {
+                        calculateTotalAmountDue();
+                        setState(() {});
+                      }
+                    },
+                    style: ElevatedButton.styleFrom(
+                      primary: _isCalculateHovered
+                        ? const Color.fromRGBO(77, 182, 172, 1)
+                        : const Color.fromRGBO(77, 182, 172, 1),
+                      onPrimary: Colors.white,
+                      padding: EdgeInsets.symmetric(horizontal: 50, vertical: 10),
+                      textStyle: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                    ),
+                    child: Text(
+                      'Get Quote',
+                      style: TextStyle(
+                        color: _isCalculateHovered ? Colors.white : Colors.black,
+                      ),
+                    ),
                   ),
-                  child: Text(
-                    'Calculate',
-                    style: TextStyle(
-                      color: _isCalculateHovered ? Colors.white : Colors.black,
+                ),
+              ),
+
+              SizedBox(height: 20.0),
+              SizedBox(
+                height: 50, // Set a fixed height for the SizedBox
+                child: MouseRegion(
+                  onEnter: (_) {
+                    setState(() {
+                      _isSubmitHovered = true;
+                    });
+                  },
+                  onExit: (_) {
+                    setState(() {
+                      _isSubmitHovered = false;
+                    });
+                  },
+                  child: ElevatedButton(
+                    onPressed: _submitForm, /*{
+                      if (_formKey.currentState?.validate() ?? false) {
+                        calculateTotalAmountDue();
+                        setState(() {});
+                      }
+                    },*/
+                    style: ElevatedButton.styleFrom(
+                      primary: _isSubmitHovered
+                        ? const Color.fromRGBO(77, 182, 172, 1)
+                        : const Color.fromRGBO(77, 182, 172, 1),
+                      onPrimary: Colors.white,
+                      padding: EdgeInsets.symmetric(horizontal: 50, vertical: 10),
+                      textStyle: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                    ),
+                    child: Text(
+                      'Submit',
+                      style: TextStyle(
+                        color: _isSubmitHovered ? Colors.white : Colors.black,
+                      ),
                     ),
                   ),
                 ),
               ),
             ],
           ),
+          
         ),
       ),
     );
