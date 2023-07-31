@@ -370,7 +370,7 @@ class _FuelQuoteFormState extends State<FuelQuoteForm> {
                           TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                     ),
                     child: Text(
-                      'Submit',
+                      'Submit Quote',
                       style: TextStyle(
                         color: _isSubmitHovered ? Colors.white : Colors.white,
                       ),
