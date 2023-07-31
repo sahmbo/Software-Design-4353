@@ -6,34 +6,44 @@ import 'controller/fuelQuoteController.dart';
 import 'quoteHistoryPage.dart';
 import 'clientManage.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'AppAuth.dart';
 
-void main() async{
+void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
   runApp(MaterialApp(
-    home: const FuelQuoteForm(deliveryAddress: '', address2: '', city: '', state: '', zipcode: '',),
+    home: const FuelQuoteForm(
+      deliveryAddress: '',
+      address2: '',
+      city: '',
+      state: '',
+      zipcode: '',
+    ),
     theme: ThemeData(
         scaffoldBackgroundColor: const Color.fromRGBO(255, 201, 173, 0.5)),
   ));
 }
 
 class FuelQuoteForm extends StatefulWidget {
-  final String deliveryAddress; // Add a parameter to receive the delivery address
+  final String
+      deliveryAddress; // Add a parameter to receive the delivery address
   final String address2;
   final String city;
   final String state;
   final String zipcode;
 
-  const FuelQuoteForm({required this.deliveryAddress,  required this.address2,
-    required this.city,
-    required this.state,
-    required this.zipcode, Key? key}) : super(key: key); // remind to change!!!!!!
+  const FuelQuoteForm(
+      {required this.deliveryAddress,
+      required this.address2,
+      required this.city,
+      required this.state,
+      required this.zipcode,
+      Key? key})
+      : super(key: key); // remind to change!!!!!!
 
   @override
   _FuelQuoteFormState createState() => _FuelQuoteFormState();
-  
 }
-
 
 class _FuelQuoteFormState extends State<FuelQuoteForm> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
@@ -42,7 +52,6 @@ class _FuelQuoteFormState extends State<FuelQuoteForm> {
   final TextEditingController _gallonsController = TextEditingController();
   final TextEditingController _deliveryDateController = TextEditingController();
   //final String _deliveryAddress = '123 Main Street'; // Replace with the actual client profile data
-
 
   bool _isSignOutHovered = false;
   bool _isCalculateHovered = false;
@@ -74,7 +83,6 @@ class _FuelQuoteFormState extends State<FuelQuoteForm> {
     _fuelQuoteController.updateGallonsRequested(gallons);
     _fuelQuoteController.calculateTotalAmountDue();
 
-
     print('Gallons: ${_fuelQuoteController.fuelQuote.gallonsRequested}');
     print('Total amount due: ${_fuelQuoteController.fuelQuote.totalAmountDue}');
   }
@@ -85,32 +93,36 @@ class _FuelQuoteFormState extends State<FuelQuoteForm> {
   }
 
   void _submitForm() {
-  if (_formKey.currentState?.validate() ?? false) {
-    // Get the form values
-    double gallons = double.tryParse(_gallonsController.text) ?? 0.0;
-    String deliveryDate = _deliveryDateController.text;
-    String deliveryAddress = widget.deliveryAddress;
-    String state = ''; // Replace with the actual state value
+    if (_formKey.currentState?.validate() ?? false) {
+      // Get the form values
+      double gallons = double.tryParse(_gallonsController.text) ?? 0.0;
+      String deliveryDate = _deliveryDateController.text;
+      String deliveryAddress = widget.deliveryAddress;
+      String state = ''; // Replace with the actual state value
 
-    // Create a map to store the data
-    Map<String, dynamic> formData = {
-      'gallonsRequested': gallons,
-      'deliveryDate': deliveryDate,
-      'deliveryAddress': deliveryAddress,
-      'state': state,
-    };
+      // Create a map to store the data
+      Map<String, dynamic> formData = {
+        'gallonsRequested': gallons,
+        'deliveryDate': deliveryDate,
+        'deliveryAddress': deliveryAddress,
+        'state': state,
+        'username': AppAuth.instance.userName,
+        'suggestedPrice': 0.0,
+        'totalAmountDue': 0.0,
 
-    // Get a reference to the Firestore collection
-    CollectionReference formCollection =
-        FirebaseFirestore.instance.collection('submitForm');
+      };
 
-    // Add the document to the collection
-    formCollection
-        .add(formData)
-        .then((value) => print('Form data added to Firestore'))
-        .catchError((error) => print('Error adding form data: $error'));
+      // Get a reference to the Firestore collection
+      CollectionReference formCollection =
+          FirebaseFirestore.instance.collection('FuelQuotes');
+
+      // Add the document to the collection
+      formCollection
+          .add(formData)
+          .then((value) => print('Form data added to Firestore'))
+          .catchError((error) => print('Error adding form data: $error'));
+    }
   }
-}
 
   @override
   Widget build(BuildContext context) {
@@ -122,55 +134,61 @@ class _FuelQuoteFormState extends State<FuelQuoteForm> {
       appBar: AppBar(
         title: const Text('Fuel Quote Form'),
         actions: <Widget>[
-        Tooltip(
-          message: 'Profile',
-          child: IconButton(
-            icon: Icon(Icons.account_circle),
-            onPressed: () {
-              Navigator.pushReplacement(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => ClientManagementApp(),
-                ),
-              );
-            },
+          Tooltip(
+            message: 'Profile',
+            child: IconButton(
+              icon: Icon(Icons.account_circle),
+              onPressed: () {
+                Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => ClientManagementApp(),
+                  ),
+                );
+              },
+            ),
           ),
-        ),
-        Tooltip(
-          message: 'Fuel Quote',
-          child: IconButton(
-            icon: Icon(Icons.local_gas_station),
-            onPressed: () {
-              Navigator.pushReplacement(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => FuelQuoteForm(deliveryAddress: '', address2: '', city: '', state: '', zipcode: '',),
-                ),
-              );
-            },
+          Tooltip(
+            message: 'Fuel Quote',
+            child: IconButton(
+              icon: Icon(Icons.local_gas_station),
+              onPressed: () {
+                Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => FuelQuoteForm(
+                      deliveryAddress: '',
+                      address2: '',
+                      city: '',
+                      state: '',
+                      zipcode: '',
+                    ),
+                  ),
+                );
+              },
+            ),
           ),
-        ),
-        Tooltip(
-          message: 'History',
-          child: IconButton(
-            icon: Icon(Icons.history),
-            onPressed: () {
-              Navigator.pushReplacement(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => QuoteHistoryPage(),
-                ),
-              );
-            },
+          Tooltip(
+            message: 'History',
+            child: IconButton(
+              icon: Icon(Icons.history),
+              onPressed: () {
+                Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => QuoteHistoryPage(),
+                  ),
+                );
+              },
+            ),
           ),
-        ),
-        Tooltip(
-          message: 'Logout',
-          child: IconButton(
-            icon: Icon(Icons.logout),
-            onPressed: _handleLogout,
+          Tooltip(
+            message: 'Logout',
+            child: IconButton(
+              icon: Icon(Icons.logout),
+              onPressed: _handleLogout,
+            ),
           ),
-        ),
         ],
       ),
       //end nav bar
@@ -181,7 +199,6 @@ class _FuelQuoteFormState extends State<FuelQuoteForm> {
           key: _formKey,
           child: ListView(
             children: [
-          
               TextFormField(
                 controller: _gallonsController,
                 keyboardType: TextInputType.number,
@@ -212,7 +229,8 @@ class _FuelQuoteFormState extends State<FuelQuoteForm> {
                 ),
               ),
               TextFormField(
-                initialValue: getFormattedDeliveryAddress(), // Use the provided delivery address here
+                initialValue:
+                    getFormattedDeliveryAddress(), // Use the provided delivery address here
                 enabled: false,
                 decoration: const InputDecoration(
                   labelText: 'Delivery Address',
@@ -239,9 +257,7 @@ class _FuelQuoteFormState extends State<FuelQuoteForm> {
                   labelText: 'Total Amount Due',
                 ),
               ),
-              
               SizedBox(height: 20.0),
-              
               SizedBox(
                 height: 50, // Set a fixed height for the SizedBox
                 child: MouseRegion(
@@ -264,22 +280,24 @@ class _FuelQuoteFormState extends State<FuelQuoteForm> {
                     },
                     style: ElevatedButton.styleFrom(
                       primary: _isCalculateHovered
-                        ? const Color.fromRGBO(77, 182, 172, 1)
-                        : const Color.fromRGBO(77, 182, 172, 1),
+                          ? const Color.fromRGBO(77, 182, 172, 1)
+                          : const Color.fromRGBO(77, 182, 172, 1),
                       onPrimary: Colors.white,
-                      padding: EdgeInsets.symmetric(horizontal: 50, vertical: 10),
-                      textStyle: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                      padding:
+                          EdgeInsets.symmetric(horizontal: 50, vertical: 10),
+                      textStyle:
+                          TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                     ),
                     child: Text(
                       'Get Quote',
                       style: TextStyle(
-                        color: _isCalculateHovered ? Colors.white : Colors.black,
+                        color:
+                            _isCalculateHovered ? Colors.white : Colors.black,
                       ),
                     ),
                   ),
                 ),
               ),
-
               SizedBox(height: 20.0),
               SizedBox(
                 height: 50, // Set a fixed height for the SizedBox
@@ -295,7 +313,8 @@ class _FuelQuoteFormState extends State<FuelQuoteForm> {
                     });
                   },
                   child: ElevatedButton(
-                    onPressed: _submitForm, /*{
+                    onPressed: _submitForm,
+                    /*{
                       if (_formKey.currentState?.validate() ?? false) {
                         calculateTotalAmountDue();
                         setState(() {});
@@ -303,11 +322,13 @@ class _FuelQuoteFormState extends State<FuelQuoteForm> {
                     },*/
                     style: ElevatedButton.styleFrom(
                       primary: _isSubmitHovered
-                        ? const Color.fromRGBO(77, 182, 172, 1)
-                        : const Color.fromRGBO(77, 182, 172, 1),
+                          ? const Color.fromRGBO(77, 182, 172, 1)
+                          : const Color.fromRGBO(77, 182, 172, 1),
                       onPrimary: Colors.white,
-                      padding: EdgeInsets.symmetric(horizontal: 50, vertical: 10),
-                      textStyle: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                      padding:
+                          EdgeInsets.symmetric(horizontal: 50, vertical: 10),
+                      textStyle:
+                          TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                     ),
                     child: Text(
                       'Submit',
@@ -320,7 +341,6 @@ class _FuelQuoteFormState extends State<FuelQuoteForm> {
               ),
             ],
           ),
-          
         ),
       ),
     );

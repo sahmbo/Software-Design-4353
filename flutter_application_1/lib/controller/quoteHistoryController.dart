@@ -11,7 +11,7 @@ class QuoteHistoryController {
         return [];
       }
       final quotesRef = FirebaseFirestore.instance
-          .collection('QuoteForms')
+          .collection('FuelQuotes')
           .withConverter<QuoteHistoryModel>(
             fromFirestore: (snapshot, _) =>
                 QuoteHistoryModel.fromJson(snapshot.data()!),

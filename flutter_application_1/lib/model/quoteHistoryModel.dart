@@ -6,34 +6,38 @@ class QuoteHistoryModel {
   final String userName;
   final double gallonsRequested;
   final String deliveryAddress;
-  final DateTime deliveryDate;
+  final String deliveryDate;
   final double suggestedPricePerGallon;
   final double totalAmountDue;
+  final String state;
 
   Map<String, Object?> toJson() {
     return {
       'username': userName,
-      'gallons_requested': gallonsRequested,
-      'delivery_address': deliveryAddress,
-      'delivery_date': Timestamp.fromDate(deliveryDate),
-      'suggested_price_per_gallon': suggestedPricePerGallon,
-      'total_amount_due': totalAmountDue,
+      'gallonsRequested': gallonsRequested,
+      'deliveryAddress': deliveryAddress,
+      'state' : state,
+      'deliveryDate': deliveryDate,
+      'suggestedPrice': suggestedPricePerGallon,
+      'totalAmountDue': totalAmountDue,
     };
   }
 
   QuoteHistoryModel.fromJson(Map<String, Object?> json)
       : this(
           userName: json['username']! as String,
-          gallonsRequested: json['gallons_requested']! as double,
-          deliveryAddress: json['delivery_address']! as String,
-          deliveryDate: (json['delivery_date']! as Timestamp).toDate(),
+          state: json['state']! as String,
+          gallonsRequested: json['gallonsRequested']! as double,
+          deliveryAddress: json['deliveryAddress']! as String,
+          deliveryDate: json['deliveryDate']! as String,
           suggestedPricePerGallon:
-              json['suggested_price_per_gallon']! as double,
-          totalAmountDue: json['total_amount_due']! as double,
+              json['suggestedPrice']! as double,
+          totalAmountDue: json['totalAmountDue']! as double,
         );
 
   QuoteHistoryModel(
       {required this.userName,
+      required this.state,
       required this.gallonsRequested,
       required this.deliveryAddress,
       required this.deliveryDate,

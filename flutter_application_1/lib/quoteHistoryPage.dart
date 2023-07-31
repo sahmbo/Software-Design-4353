@@ -161,7 +161,7 @@ class _DataTable extends State<QuoteHistoryPage> {
                         Text(p.deliveryAddress),
                       ),
                       DataCell(
-                        Text(dateFormat.format(p.deliveryDate)),
+                        Text(p.deliveryDate),
                       ),
                       DataCell(
                         Text(p.suggestedPricePerGallon.toString()),
