@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_application_1/controller/quoteHistoryController.dart';
 import 'loginPage.dart';
 import 'controller/fuelQuoteController.dart';
 import 'quoteHistoryPage.dart';
@@ -48,14 +49,22 @@ class FuelQuoteForm extends StatefulWidget {
 class _FuelQuoteFormState extends State<FuelQuoteForm> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final FuelQuoteController _fuelQuoteController = FuelQuoteController();
-
+  final QuoteHistoryController _quoteHistoryController =
+      QuoteHistoryController();
   final TextEditingController _gallonsController = TextEditingController();
   final TextEditingController _deliveryDateController = TextEditingController();
+  final TextEditingController _deliveryAddressController = TextEditingController();
+  final TextEditingController _suggestedPriceController = TextEditingController();
+  final TextEditingController _totalAmountDueController = TextEditingController();
+  final TextEditingController _stateController = TextEditingController();
   //final String _deliveryAddress = '123 Main Street'; // Replace with the actual client profile data
 
   bool _isSignOutHovered = false;
   bool _isCalculateHovered = false;
   bool _isSubmitHovered = false;
+  String state = '';
+  double? suggestedPrice;
+  double? totalAmountDue;
 
   Future<void> _handleLogout() async {
     try {
@@ -78,18 +87,51 @@ class _FuelQuoteFormState extends State<FuelQuoteForm> {
     super.dispose();
   }
 
-  void calculateTotalAmountDue() {
-    double gallons = double.tryParse(_gallonsController.text) ?? 0.0;
-    _fuelQuoteController.updateGallonsRequested(gallons);
-    _fuelQuoteController.calculateTotalAmountDue();
-
-    print('Gallons: ${_fuelQuoteController.fuelQuote.gallonsRequested}');
-    print('Total amount due: ${_fuelQuoteController.fuelQuote.totalAmountDue}');
+  Future<Map<String, dynamic>?> fetchUserProfileData(String? username) async {
+    try {
+      final DocumentSnapshot<Map<String, dynamic>> snapshot =
+          await FirebaseFirestore.instance
+              .collection("Profiles")
+              .doc(username)
+              .get();
+      if (snapshot.exists) {
+        return snapshot.data();
+      }
+    } catch (e) {
+      //print("");
+    }
+    return null;
   }
 
-  String getFormattedDeliveryAddress() {
-    // Concatenate the address components into a single string
-    return "${widget.deliveryAddress}, ${widget.address2}, ${widget.city}, ${widget.state}, ${widget.zipcode}";
+  Future<void> loadUserProfileData() async {
+    String? username = AppAuth.instance.userName;
+    final userProfileData = await fetchUserProfileData(username);
+
+    if (userProfileData != null) {
+      setState(() {
+        final deliveryAddress1 = userProfileData["Address 1"] ?? '';
+        final deliveryAddress2 = userProfileData["Address 2"] ?? '';
+        final city = userProfileData["City"] ?? '';
+        final zipcode = userProfileData["Zipcode"] ?? '';
+        state = userProfileData["State"] ?? '';
+        _deliveryAddressController.text =
+            "$deliveryAddress1, $deliveryAddress2, $city, $state, $zipcode";
+        _stateController.text = state;
+      });
+    }
+  }
+
+  void calculateTotalAmountDue() async {
+    double gallons = double.tryParse(_gallonsController.text) ?? 0.0;
+    double locationFactor = state == "TX" ? 0.02 : 0.04;
+    double rateHistoryFactor = await _quoteHistoryController.UserHasHistory(AppAuth.instance.userName) ? 0.01 : 0.0;
+    double gallonsRequestedFactor = gallons > 1000 ? 0.02 : 0.03;
+    double companyProfitFactor = 0.1;
+    double margin = 1.5 * (locationFactor - rateHistoryFactor + gallonsRequestedFactor + companyProfitFactor);
+    suggestedPrice = 1.5 + margin;
+    totalAmountDue = gallons * suggestedPrice!;
+    _suggestedPriceController.text = "${suggestedPrice!.toStringAsFixed(3)}";
+    _totalAmountDueController.text = "${totalAmountDue!.toStringAsFixed(2)}";
   }
 
   void _submitForm() {
@@ -104,12 +146,11 @@ class _FuelQuoteFormState extends State<FuelQuoteForm> {
       Map<String, dynamic> formData = {
         'gallonsRequested': gallons,
         'deliveryDate': deliveryDate,
-        'deliveryAddress': deliveryAddress,
-        'state': state,
+        'deliveryAddress': _deliveryAddressController.text,
+        'state': _stateController.text,
         'username': AppAuth.instance.userName,
-        'suggestedPrice': 0.0,
-        'totalAmountDue': 0.0,
-
+        'suggestedPrice': suggestedPrice,
+        'totalAmountDue': totalAmountDue,
       };
 
       // Get a reference to the Firestore collection
@@ -126,6 +167,7 @@ class _FuelQuoteFormState extends State<FuelQuoteForm> {
 
   @override
   Widget build(BuildContext context) {
+    loadUserProfileData();
     var suggestedPrice = 0;
     var totalAmountDue = 0;
     //var _submitForm;
@@ -229,29 +271,21 @@ class _FuelQuoteFormState extends State<FuelQuoteForm> {
                 ),
               ),
               TextFormField(
-                initialValue:
-                    getFormattedDeliveryAddress(), // Use the provided delivery address here
+                controller: _deliveryAddressController,
                 enabled: false,
                 decoration: const InputDecoration(
                   labelText: 'Delivery Address',
                 ),
               ),
               TextFormField(
-                //initialValue: widget.State, // Use the provided delivery address here
-                enabled: false,
-                decoration: const InputDecoration(
-                  labelText: 'State',
-                ),
-              ),
-              TextFormField(
-                initialValue: suggestedPrice.toString(),
+                controller: _suggestedPriceController,
                 enabled: false,
                 decoration: const InputDecoration(
                   labelText: 'Suggested Price / gallon',
                 ),
               ),
               TextFormField(
-                initialValue: totalAmountDue.toString(),
+                controller: _totalAmountDueController,
                 enabled: false,
                 decoration: const InputDecoration(
                   labelText: 'Total Amount Due',

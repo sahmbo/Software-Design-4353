@@ -33,4 +33,33 @@ class QuoteHistoryController {
       return [];
     }
   }
+
+  Future<bool> UserHasHistory(String? userName) async {
+    try {
+      if (userName == null) {
+        return false;
+      }
+      final quotesRef = FirebaseFirestore.instance
+          .collection('FuelQuotes')
+          .withConverter<QuoteHistoryModel>(
+            fromFirestore: (snapshot, _) =>
+                QuoteHistoryModel.fromJson(snapshot.data()!),
+            toFirestore: (quoteHistoryItem, _) => quoteHistoryItem.toJson(),
+          );
+
+      // Get docs from collection reference
+      List<QuoteHistoryModel> quoteHistoryItems = await quotesRef
+          .where('username', isEqualTo: userName)
+          .get()
+          .then((value) => value.docs
+              .map((e) => e.data())
+              .toList()
+              .cast<QuoteHistoryModel>());
+
+      return quoteHistoryItems.isNotEmpty;
+    } catch (e) {
+      print(e);
+      return false;
+    }
+  }
 }
