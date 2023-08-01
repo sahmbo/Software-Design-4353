@@ -3,7 +3,6 @@ import 'controller/loginPageController.dart';
 import 'model/loginPageModel.dart';
 import 'loginPage.dart'; // Import the LoginPage
 
-
 class ClientRegistration extends StatefulWidget {
   const ClientRegistration({super.key});
 
@@ -41,6 +40,7 @@ class _ClientRegistrationState extends State<ClientRegistration> {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Client Registration'),
+        backgroundColor: Colors.teal[200],
       ),
       body: Center(
         child: Padding(
